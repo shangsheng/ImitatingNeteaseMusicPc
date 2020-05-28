@@ -10,7 +10,7 @@
 						</h3>
 					</div>
 					<div class="n-singer j-flag">
-						<div class="itm f-cb" v-for="(item,index) in artistData.data">
+						<div class="itm f-cb" v-for="(item,index) in artistData.data" v-bind:key="index">
 							<div class="cvr">
 								<router-link :to="{path:'/artist',query:{id:item.id}}" class="f-ib f-tdn">
 									<img :src="item.picUrl"/>

@@ -76,9 +76,7 @@
 							<div class="u-goon f-hide j-flag"></div>
 							<table class="m-table m-table-program">
 								<tbody>
-									<tr class="j-tr" v-for="(item,index) in djProgram"  @mouseover="selectStyle (item) "
-            :class="{'z-hover':item.active}" 
-            @mouseout="outStyle(item)" v-if="index%2 != 0">
+									<tr class="j-tr" v-for="(item,index) in djProgram" v-bind:key="index"  @mouseover="selectStyle (item) " :class="{'z-hover':item.active,'even': index%2 != 0}"     @mouseout="outStyle(item)" >
 										<td class="col1" >
 											<div class="hd">
 												<span class="ply" :class="{'ply-z-slt':songsNum == index}" data-res-action="play" :data-res-id="item.id" data-res-from="70" :data-res-radioid="item.radio.id" data-res-radiotype="djradio" :data-res-data="item.radio.id" data-res-type="17" title="播放" @click.stop="plays($event)" :data-res-index="index"></span>
@@ -108,38 +106,7 @@
 											<span class="s-fc4">{{item.duration}}</span>
 										</td>
 									</tr>
-									<tr class="j-tr even"   @mouseover="selectStyle (item) "
-            :class="{'z-hover':item.active}" 
-            @mouseout="outStyle(item)" v-else>
-										<td class="col1" >
-											<div class="hd">
-												<span class="ply" data-res-action="play" :data-res-id="item.id" data-res-from="70" :data-res-radioid="item.radio.id" data-res-radiotype="djradio" :data-res-data="item.radio.id" data-res-type="17" title="播放"></span>
-												<span class="num">{{item.serialNum}}</span>
-											</div>
-										</td>
-										<td class="col2">
-											<div class="tt f-thide">
-												<router-link :to="{path:'/program',query:{id:item.id}}" :title="item.name">{{item.name}}</router-link>
-											</div>
-											<div class="opt hshow">
-												<span class="u-icn u-icn-81 icn-add" data-res-type="17" :data-res-id="item.id" :data-res-radioid="item.radio.id" data-res-radiotype="djradio" data-res-from="70" :data-res-data="item.radio.id" data-res-action="addto" title="添加到播放列表"></span>
-												<span class="icn icn-share" data-res-type="17" data-res-action="share" :data-res-id="item.id" :data-res-radioid="item.radio.id" data-res-radiotype="djradio" data-res-from="70" :data-res-data="item.radio.id" :data-res-auditstatus="item.auditStatus" :data-res-name="item.name" :data-res-author="item.radio.name" :data-res-pic="item.coverUrl" title="分享">分享</span>
-												<span class="icn icn-dl" data-res-type="17" data-res-action="download" :data-res-id="item.id" :data-res-radioid="item.radio.id" data-res-radiotype="djradio" data-res-from="70" :data-res-data="item.radio.id" title="下载">下载</span>
-											</div>
-										</td>
-										<td class="col3">
-											<span class="s-fc3">播放{{item.listenerCount}}</span>
-										</td>
-										<td class="col4">
-											<span class="s-fc3">攒{{item.likedCount}}</span>
-										</td>
-										<td class="col5">
-											<span class="s-fc4">{{item.createTime}}</span>
-										</td>
-										<td class="f-pr">
-											<span class="s-fc4">{{item.duration}}</span>
-										</td>
-									</tr>
+									
 								</tbody>
 							
 							</table>

@@ -16,15 +16,18 @@
 											<i class="f-fl u-icn u-icn-16"></i>
 											<div class="tit">
 												<h2 class="f-ff2">{{album.name}}</h2>
-												<div class="subtit f-fs1 f-ff2" v-for=" keys in album.transNames" v-if="album.transNames.length>0">
-													{{keys}}
+												<div v-if="album.transNames.length>0" class="f-ff2">
+													<div class="subtit f-fs1 " v-for=" (keys,index) in album.transNames" v-bind:key="index">
+														{{keys}}
+													</div>
 												</div>
+												
 											</div>
 										</div>
 										<p class="intr">
 											<b>歌手：</b>
 											<span :title="album.artistsName">
-												<router-link :to="{path:'/artist',query:{id:obj.id}}" v-for="(obj,num) in album.artists" class="s-fc7">{{obj.name}} <i v-bind:hidden="num ==album.artists.length-1">/</i></router-link>
+												<router-link :to="{path:'/artist',query:{id:obj.id}}" v-for="(obj,num) in album.artists" class="s-fc7" v-bind:key="num">{{obj.name}} <i v-bind:hidden="num ==album.artists.length-1">/</i></router-link>
 											</span>
 										</p>
 										<p class="intr">
@@ -43,10 +46,10 @@
 						<div class="n-albdesc">
 							<h3>专辑介绍：</h3>
 							<div class="f-brk" :class="{'f-hide':!fHide}">
-								<p v-for="item in album.descriptions">{{item}}</p>
+								<p v-for="(item,index) in album.descriptions" v-bind:key="index">{{item}}</p>
 							</div>
 							<div  :class="{'f-hide':fHide}">
-								<p class="f-brk" v-for="item in album.description">{{item}}</p>
+								<p class="f-brk" v-for="(item,index) in album.description" v-bind:key="index">{{item}}</p>
 							</div>
 							
 							<div class="f-cb" v-if="album.description">

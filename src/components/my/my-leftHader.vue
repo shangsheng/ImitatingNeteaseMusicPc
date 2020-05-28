@@ -2,7 +2,7 @@
 	<div id="my-left">
 		
 		<div class="g-sd3 u-scroll n-musicsd f-pr j-flag">
-			<div v-for="(item,index) in subcount" v-if="item.countfalse&&subCountData[item.name]!=0">
+					<div v-for="(item,index) in subcount" v-if="item.countfalse&&subCountData[item.name]!=0">
 						<h2 class="usersub" :class="{'js-selected':jsSelected == index}">
 							<router-link :to="{path:item.pathUrl}" class="f-fs1 s-fc0 f-ff1">{{item.title}}({{subCountData[item.name]}})</router-link>
 						</h2>
@@ -21,7 +21,7 @@
 							</span>
 						</h2>
 						<ul class="j-flag f-cb">
-							<li class="j-iflag " :class="{'z-selected':itemz.num == indexZn}"  :data-res-index="indexZ" v-for="(itemz,indexZ) of item.cHeaderData">
+							<li class="j-iflag " :class="{'z-selected':itemz.num == indexZn}"  :data-res-index="indexZ" v-for="(itemz,indexZ) of item.cHeaderData" v-bind:key="indexZ">
 								<div class="item f-cb" :data-res-id="itemz.id" @click.stop="getMyHttp($event)">
 									<div class="left" @click.stop="getMyHttp($event)">
 										<span class="avatar" @click.stop="getMyHttp($event)">

@@ -12,7 +12,7 @@
 							</h3>
 						</div>
 						<ul class="n-ltlst f-cb" v-if="catlist">
-							<li v-for="(item,index) of initial">
+							<li v-for="(item,index) of initial" v-bind:key="index">
 								<span class="ch f-fs0 cursor" v-if="index == 0||index == initial.length-1" :class="{'z-slt':lZslt == item.Letter}" :data-res-letter="item.Letter" @click.stop="catLetter($event)">{{item.Letter}}</span>
 								<span  v-else :class="{'z-slt':lZslt == item.Letter}" class="cursor" :data-res-letter="item.Letter" @click.stop="catLetter($event)">{{item.Letter}}</span>
 							</li>

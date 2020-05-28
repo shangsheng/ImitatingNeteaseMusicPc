@@ -32,14 +32,15 @@
 							<div class="u-alt">
 								<ul>
 									
-									<li  v-for="item in login.l.logoMode" v-if="item.target == '_self'" >
-										<span><i class="u-mlg2" :class=" [item.icon]" :data-action="item.idName" @click.stop="skip($event)"></i><em :data-action="item.idName" @click.stop="skip($event)">{{item.name}}</em></span>
-									</li>
-									<li  v-else :data-action="item.idName">
-										<router-link :to="{path:'/api/sns/authorize',query:{id:item.id}}" :target= 'item.target'>
+									<li  v-for="(item,index) in login.l.logoMode" v-bind:key="index">
+										<span  v-if="item.target == '_self'"><i class="u-mlg2" :class=" [item.icon]" :data-action="item.idName" @click.stop="skip($event)"></i><em :data-action="item.idName" @click.stop="skip($event)">{{item.name}}</em></span>
+										<router-link v-else :to="{path:'/api/sns/authorize',query:{id:item.id}}" :target= 'item.target'>
 											<span><i class="u-mlg2"  :class=" [item.icon]"></i><em>{{item.name}}</em></span>
 										</router-link>
 									</li>
+									<!-- <li   :data-action="item.idName">
+										
+									</li> -->
 								</ul>
 							</div>
 						</div>
@@ -57,7 +58,7 @@
 										<input type="text" name="p" id="p" placeholder="请输入手机号" class="j-phone txt u-txt" v-model="login.pl.pVlaue"/>
 									</div>
 									<ul class="j-list options " :class="{'f-hide':login.pl.areaCode}">
-										<li class="item f-cb" v-for="(item, index) in login.pl.options" data-action="select" :data-index="index" @click="skip($event)">
+										<li class="item f-cb" v-for="(item, index) in login.pl.options" data-action="select" :data-index="index" @click="skip($event)" v-bind:key="index">
 											<span class="lt" data-action="select" :data-index="index" @click="skip($event)">{{item.name}}</span>
 											<span class="rt" data-action="select" :data-index="index" @click="skip($event)">+{{item.countrycode}}</span>
 										</li>
@@ -89,7 +90,7 @@
 						</div>
 						<div class="js-btmbar n-loglink2 f-cb">
 							<div class="f-fl s-primary" data-action="l" @click="skip($event)">
-								<&nbsp;&nbsp;其他登录方式
+								&lt;&nbsp;&nbsp;其他登录方式
 							</div>
 							<div class="f-fr" data-action="reg">
 								没有账号？免费注册&nbsp;&nbsp;>
@@ -135,7 +136,7 @@
 						</div>
 						<div class="js-btmbar n-loglink2 f-cb">
 							<div class="f-fl s-primary" data-action="l" @click="skip($event)">
-								<&nbsp;&nbsp;其他登录方式
+								&lt;&nbsp;&nbsp;其他登录方式
 							</div>
 							
 						</div>

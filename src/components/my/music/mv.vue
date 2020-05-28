@@ -10,7 +10,7 @@
 						</h3>
 					</div>
 					<ul class="j-flag n-favmv m-mvlist m-mvlist-1 f-cb">
-						<li v-for="item in mvData.data">
+						<li v-for="(item,index) in mvData.data" v-bind:key="index">
 							<div class="cover f-pr">
 								<img :src="item.coverUrl"/>
 								<span class="msk" :title="item.title"></span>
@@ -27,7 +27,7 @@
 							</h4>
 							<h5 class="name f-thide">
 								<span class="f-thide" :title="item.creatorTitle">
-									<router-link :to="{path:'/artist',query:{id:itemA.userId}}" class="s-fc3" v-for="(itemA,indexA) in item.creator">{{itemA == item.creator.length-1? itemA.userName : (itemA.userName + '/')}}</router-link>
+									<router-link :to="{path:'/artist',query:{id:itemA.userId}}" class="s-fc3" v-for="(itemA,indexA) in item.creator" v-bind:key="indexA">{{itemA == item.creator.length-1? itemA.userName : (itemA.userName + '/')}}</router-link>
 								</span>
 							</h5>
 						</li>

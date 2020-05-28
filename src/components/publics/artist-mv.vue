@@ -1,7 +1,7 @@
 <template>
 	<div id="artistMv">
 		<ul class="m-cvrlst m-cvrlst-7 f-cb" v-if="artistMvs">
-			<li v-for="item in artistMvs.mvs">
+			<li v-for="(item,index) in artistMvs.mvs" v-bind:key="index">
 				<div class="u-cover u-cover-7">
 					<img :src="item.imgurl"/>
 					<router-link :to="{path:'/mv',query:{id:item.id}}" class="msk"></router-link>

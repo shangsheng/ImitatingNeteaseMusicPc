@@ -18,20 +18,20 @@
 					</div>
 					<div class="bd">
 						<h3><router-link to="/discover/playlist/" class="j-flag u-btn u-btn-g s-fc1" @click.native="pathQuery"><em>全部风格</em></router-link></h3>
-						<dl class="f-cb" v-for="(item,index) in catList">
+						<dl class="f-cb" v-for="(item,index) in catList" v-bind:key="index">
 							<dt >
 								<i class="u-icn" :class="[item.icon]"></i>
 								{{item.name}}
 							</dt>
 							<dd>
-								<router-link :to="{path:'/discover/playlist/',query:{cat:obj.name}}" class="s-fc1 " v-for="obj of item.sub" :data-cat="obj.name" @click.native="pathQuery">{{obj.name}} <span class="line">|</span></router-link>
+								<router-link :to="{path:'/discover/playlist/',query:{cat:obj.name}}" class="s-fc1 " v-for="(obj,oIndex) of item.sub" :data-cat="obj.name" @click.native="pathQuery" v-bind:key="oIndex">{{obj.name}} <span class="line">|</span></router-link>
 							</dd>
 						</dl>
 					</div>
 					<div class="ft"></div>
 				</div>
 				<ul class="m-cvrlst f-cb" v-if="playlist.length>0">
-					<li v-for="item of playlist">
+					<li v-for="(item,index) of playlist" v-bind:key="index">
 						<div class="u-cover u-cover-1">
 							<img :src="item.coverImgUrl" class="j-flag"/>
 							<router-link :to="{path:'/playlist',query:{id:item.id}}" class="msk" :title="item.name"></router-link>

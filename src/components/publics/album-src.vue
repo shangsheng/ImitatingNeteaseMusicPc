@@ -17,7 +17,7 @@
 						<router-link :to="{path:'/album',query:{id:albumData.album.id}}" class="s-fc1">{{albumData.album.name}}</router-link>
 					</h3>
 					<h4 class="from f-thide s-fc3">
-						<router-link :to="{path:'/artist',query:{id:item.id}}" v-for="(item,index) in albumData.album.artists" class="s-fc3">{{index == albumData.album.artists.length-1&&item.name||(item.name+'/')}}</router-link>
+						<router-link :to="{path:'/artist',query:{id:item.id}}" v-for="(item,index) in albumData.album.artists" class="s-fc3" v-bind:key="index">{{index == albumData.album.artists.length-1&&item.name||(item.name+'/')}}</router-link>
 					</h4>
 				</div>
 			</div>

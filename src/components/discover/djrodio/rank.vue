@@ -15,7 +15,7 @@
 					</div>
 				</div>
 				<ul class="m-plylist toplist toplist-rank f-cb">
-					<li class="itm" v-for="(item,index) in rankList.toplist">
+					<li class="itm" v-for="(item,index) in rankList.toplist" v-bind:key="index">
 						<div class="rank s-fc4 f-fl">
 							<em class=" f-fs1" :class="{'red':index<3}" v-if="index<9">0{{ index+1}}</em>
 							<em class=" f-fs1"  v-else>{{ index+1}}</em>

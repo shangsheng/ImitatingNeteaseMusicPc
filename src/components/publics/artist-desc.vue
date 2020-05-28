@@ -6,12 +6,14 @@
 				{{artistName}}简介
 			</h2>
 			<p>{{artistDescs.briefDesc}}</p>
-			<div v-for="item of artistDescs.introduction" v-if="artistDescs.introduction.length>0">
-				<h2>
-				<i>&nbsp;</i>
-				{{item.ti}}
-			</h2>
-			<p class="z-indent" v-html="item.txt"></p>
+			<div v-for="(item,index) of artistDescs.introduction" v-bind:key="index">
+				<div v-if="artistDescs.introduction.length>0">
+					<h2>
+						<i>&nbsp;</i>
+						{{item.ti}}
+					</h2>
+					<p class="z-indent" v-html="item.txt"></p>
+				</div>
 			</div>
 		</div>
 		<div class="u-load s-fc4" v-else>

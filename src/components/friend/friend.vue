@@ -21,7 +21,7 @@
 							<div class="m-timeline">
 								<ul class="m-dlist j-flag">
 									
-									<li class="itm" v-for="(item,index) of friendData">
+									<li class="itm" v-for="(item,index) of friendData" v-bind:key="index">
 										<div class="gface" v-bind:hidden="item.json.msg == undefined">
 											<router-link to="{path:'/user/home',query:{id:item.user.userId}}" class="ficon">
 												<img :src="item.user.avatarUrl" class="j-flag"/>
@@ -155,7 +155,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="g-sd5"v-if="loginData">
+			<div class="g-sd5" v-if="loginData">
 				<div class="n-frduser">
 					<router-link :to="{path:'/user/home',query:{id:loginData.profile.userId}}" class="face">
 						<img :src="loginData.profile.avatarUrl+'?param=70y70'"/>

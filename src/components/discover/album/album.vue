@@ -8,20 +8,22 @@
 					</h3>
 				</div>
 				<ul class="m-cvrlst m-cvrlst-alb2 f-cb">
-					<li v-for="(item,index) in discShelves" v-if="index < 10">
-						<div class="u-cover u-cover-alb2">
-							<img :src="item.picUrl"/>
-							<router-link :to="{path:'/album',query:{id:item.id}}" class="msk" :title="item.name"></router-link>
-							<span class="icon-play f-alpha f-fr cou cursor" title="播放" :data-res-type="item.type" :data-res-id="item.id" data-res-action="play" @click.stop="playSong($event)"></span>
-						</div>
-						<p class="dec">
-							<router-link :to="{path:'/album',query:{id:item.id}}" class="tit f-thide s-fc0" :title="item.name">{{item.name}}</router-link>
-						</p>
-						<p class="f-thide">
-							<span class="nm f-thide" :title="item.artistName">
-								<router-link :to="{path:'/artist',query:{id:obj.id}}" class="s-fc3" v-for="(obj,nums) of item.artists">{{obj.name}} <i v-bind:hidden="nums == item.artists.length-1">/</i></router-link>
-							</span>
-						</p>
+					<li v-for="(item,index) in discShelves" v-bind:key="index">
+						
+							<div class="u-cover u-cover-alb2">
+								<img :src="item.picUrl"/>
+								<router-link :to="{path:'/album',query:{id:item.id}}" class="msk" :title="item.name"></router-link>
+								<span class="icon-play f-alpha f-fr cou cursor" title="播放" :data-res-type="item.type" :data-res-id="item.id" data-res-action="play" @click.stop="playSong($event)"></span>
+							</div>
+							<p class="dec">
+								<router-link :to="{path:'/album',query:{id:item.id}}" class="tit f-thide s-fc0" :title="item.name">{{item.name}}</router-link>
+							</p>
+							<p class="f-thide">
+								<span class="nm f-thide" :title="item.artistName">
+									<router-link :to="{path:'/artist',query:{id:obj.id}}" class="s-fc3" v-for="(obj,nums) of item.artists" v-bind:key="nums">{{obj.name}} <i v-bind:hidden="nums == item.artists.length-1">/</i></router-link>
+								</span>
+							</p>
+					
 					</li>
 				</ul>
 				<div class="u-title f-cb">
@@ -36,7 +38,7 @@
 					
 				</div>
 				<ul class="m-cvrlst m-cvrlst-alb2 f-cb" v-if="allDiscShelves.length>0">
-					<li v-for="item in allDiscShelves">
+					<li v-for="(item,index) in allDiscShelves" v-bind:key="index">
 						<div class="u-cover u-cover-alb2">
 							<img :src="item.picUrl"/>
 							<router-link :to="{path:'/album',query:{id:item.id}}" class="msk" :title="item.name"></router-link>
@@ -47,7 +49,7 @@
 						</p>
 						<p class="f-thide">
 							<span class="nm f-thide" :title="item.artistName">
-								<router-link :to="{path:'/artist',query:{id:obj.id}}" class="s-fc3" v-for="(obj,nums) of item.artists">{{obj.name}} <i v-bind:hidden="nums == item.artists.length-1">/</i></router-link>
+								<router-link :to="{path:'/artist',query:{id:obj.id}}" class="s-fc3" v-for="(obj,nums) of item.artists" v-bind:key="nums">{{obj.name}} <i v-bind:hidden="nums == item.artists.length-1">/</i></router-link>
 							</span>
 						</p>
 					</li>
@@ -116,7 +118,7 @@
 						}
 					})
 				})
-	         	that.discShelves = res.data.albums
+	         	that.discShelves = res.data.albums.slice(0,10);
 	         	
 	         }).catch(res=>{
 	         	console.log('请求失败：'+res.data+','+res.statusText);

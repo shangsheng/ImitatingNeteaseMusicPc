@@ -139,10 +139,11 @@
 														<span class="j-label label">{{jOptions[optionsNums].name}}</span>
 													</div>
 													<ul class="j-options options" >
-														<li class="itm " v-for="(items,indexn) in jOptions" :class="{'z-sel':optionsNums == indexn}" v-if=" indexn >  videoUrl.length">
+														<li class="itm " v-for="(items,indexn) in jOptions" :class="{'z-sel':optionsNums == indexn}" v-bind:key="indexn"  >
 															<span class="label">{{items.name}}</span>
 															<span class="cursor ffull" data-action="video-br" :data-index="indexn" @click.stop="clickDefinition(indexn)"></span>
 														</li>
+														
 														<li class="arrow"></li>
 													</ul>
 												</div>
@@ -221,7 +222,7 @@
 						</span>
 					</h3>
 					<ul class="n-mvlist f-cb" v-if="xgmv">
-						<li v-for="(item,index) in xgmv">
+						<li v-for="(item,index) in xgmv" v-bind:key="index">
 							<div class="u-cover u-cover-8 f-fl">
 								<img :src="item.coverUrl"/>
 								<p class="ci u-msk u-msk-1">
@@ -238,7 +239,7 @@
 								<p class="s-fc4">{{item.durationms}}</p>
 								<p class="s-fc4 f-thide">
 									by
-									<router-link :to="{path:'/artist',query:{id:aItem.userId}}" class="s-fc4" v-for="(aItem,aIndex) of item.creator">{{aIndex ==  item.creator.length-1 && aItem.userName || (aTtem.userName + '-')}}</router-link>
+									<router-link :to="{path:'/artist',query:{id:aItem.userId}}" class="s-fc4" v-for="(aItem,aIndex) of item.creator" v-bind:key="aIndex">{{aIndex ==  item.creator.length-1 && aItem.userName || (aTtem.userName + '-')}}</router-link>
 								</p>
 							</div>
 						</li>
@@ -303,13 +304,14 @@
     }
      
   },
-  inject:['reload'],//app.vueҳ���ж����¼���
+  inject:['reload','playHidden'],//app.vueҳ���ж����¼���
    beforeCreate: function () {
 //          debugger;
         },
         created: function () {
 //          debugger;
 		this.mvHttp();
+		this.playHidden();
 		this.$root.eventVue.$emit('zSltV',this.zSlt);
 		this.$root.eventVue.$emit('barVoice',this.barVoice);
 		//不能用同级组件传值

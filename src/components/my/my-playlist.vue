@@ -36,7 +36,7 @@
 									<play-songs v-bind:playlistArr="playSongs" v-if="playSongs"></play-songs>
 									<div class="tags f-cb" v-if="playlist.tags.length != 0">
 										<b>标签:</b>
-										<router-link :to="{path:'/discover/playlist/',query:{cat:item,order:'hot'}}" class="u-tag" v-for="item of playlist.tags"><i>{{item}}</i></router-link>
+										<router-link :to="{path:'/discover/playlist/',query:{cat:item,order:'hot'}}" class="u-tag" v-for="(item,index) of playlist.tags" v-bind:key="index"><i>{{item}}</i></router-link>
 									</div>
 									<p class="intr f-brk" :class="{'f-hide':!fHide}" v-if="playlist.description">介绍: <span v-html="cutStringComent(playlist.description)"></span></p>
 									<p class="intr f-brk " :class="{'f-hide':fHide}">介绍: <span v-html="playlist.description"></span></p>

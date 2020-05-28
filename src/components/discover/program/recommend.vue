@@ -9,7 +9,7 @@
 					<span class="sub s-fc4">(每日更新)</span>
 				</div>
 				<ul class="m-plylist toplist toplist-recmd f-cb" v-if="recommendList">
-					<li class="itm" v-for="(item,index) of recommendList" :class="{'bg':index%2!=0}">
+					<li class="itm" v-for="(item,index) of recommendList" :class="{'bg':index%2!=0}" v-bind:key="index">
 						<span class="col cvr u-cover u-cover-tiny" title="播放">
 							<img :src="item.coverUrl"/>
 							<i class="ply f-pa f-dn f-alpha cursor" data-res-action="play" :data-res-id="item.id" data-res-type="17" @click.stop="plays($event)"></i>

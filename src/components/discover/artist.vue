@@ -17,7 +17,7 @@
 							<span class="btnfav f-tid cursor" data-res-like="likeArtist" :data-res-id="id" @click.stop="clickLike($event)" :class="{'btnfav-0':likeBull}">收藏</span>
 						</div>
 						<ul class="m-tabs f-cb">
-							<li :class="{'fst':index == indexNum}" v-for="(item,index) in mTabs">
+							<li :class="{'fst':index == indexNum}" v-for="(item,index) in mTabs" v-bind:key="index">
 								<span  :class="{'z-slt':index == indexNum}" @click.stop="cilickTabs(index)">
 									<em :data-res-index="index">{{item.name}}</em>
 								</span>
@@ -44,7 +44,7 @@
 						<span class="f-fl">热门歌手</span>
 					</h3>
 					<ul class="m-hdlist f-cb">
-						<li v-for="item of hotArts">
+						<li v-for="(item,index) of hotArts" v-bind:key="index">
 							<div class="hd">
 								<router-link :to="{path:'/artist',query:{id:item.id}}" :title="item.name">
 									<img :src="item.img1v1Url"/>

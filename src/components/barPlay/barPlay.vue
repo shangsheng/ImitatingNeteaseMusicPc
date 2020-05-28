@@ -31,15 +31,21 @@
 							<router-link :to="{path:'/mv',query:{id:songstracks[songsNum].mvid}}" class="mv f-fl" v-bind:hidden="songstracks[songsNum].mvid == 0" title="mv" v-if="songstracks[songsNum].mvid !=undefined"></router-link>
 							<router-link :to="{path:'/mv',query:{id:songstracks[songsNum].mv}}" class="mv f-fl" v-bind:hidden="songstracks[songsNum].mv == 0" title="mv" v-else></router-link>
 							<span class="by f-thide f-fl" >
-								<span :title="item.name" v-for="item in songstracks[songsNum].artists" v-if="songstracks[songsNum].artists">
-									<router-link :to="{path:songsData.arPath,query:{id:item.id}}">{{item.name}}</router-link>
+								<span v-if="songstracks[songsNum].artists">
+									<span :title="item.name" v-for="(item,index) in songstracks[songsNum].artists" v-bind:key="index" >
+										<router-link :to="{path:songsData.arPath,query:{id:item.id}}">{{item.name}}</router-link>
+									</span>
 								</span>
+								
 								<span v-else-if="songstracks[songsNum].dj" :title="songstracks[songsNum].radio.name">
 									<router-link :to="{path:songsData.arPath,query:{id:songstracks[songsNum].radio.id}}">{{songstracks[songsNum].radio.name}}</router-link>
 								</span>
-								<span :title="item.name" v-for="item in songstracks[songsNum].ar" v-else>
-									<router-link :to="{path:songsData.arPath,query:{id:item.id}}">{{item.name}}</router-link>
+								<span v-else>
+									<span :title="item.name" v-for="(item,index) in songstracks[songsNum].ar" v-bind:key="index">
+										<router-link :to="{path:songsData.arPath,query:{id:item.id}}">{{item.name}}</router-link>
+									</span>
 								</span>
+								
 							</span><!--歌手名-->
 							<router-link :to="{path:songsData.titlePath,query:{s:songsList.resData}}" class="src" :title="songsData.title" v-if="songslx[songsList.num].srarchB"></router-link><!--专辑链接-->
 							<router-link :to="{path:songsData.titlePath,query:{id:songsList.id}}" class="src" :title="songsData.title" v-else-if="songslx[songsList.num].titlePath"></router-link>
@@ -138,7 +144,7 @@
 							
 							<happy-scroll color="rgba(134,134,134,0.8)" :min-length-v="0.2" size="6" smaller-move-v="start" resize hide-horizontal>
 								<ul class="f-cb">
-									<li v-for="(item,index) in songstracks"  :class="{'z-sel':songsNum == index}" data-action="play" :data-index="index" :data-id="item.id" >
+									<li v-for="(item,index) in songstracks"  :class="{'z-sel':songsNum == index}" data-action="play" :data-index="index" :data-id="item.id"  v-bind:key="index">
 										<div class="col col-1">
 											<div class="playicn"></div>
 										</div>
@@ -155,8 +161,13 @@
 										</div>
 										<div class="col col-4">
 											<span title="" >
-												<router-link :to="{path:'/artist',query:{id:val.id}}" v-for="(val,i) in item.artists" v-if="item.artists">{{val.name}}{{i != item.artists.length-1?'/':''}}</router-link>
-												<router-link :to="{path:'/artist',query:{id:val.id}}" v-for="(val,i) in item.ar" v-else>{{val.name}}{{i != item.ar.length-1?'/':''}}</router-link>
+												<span v-if="item.artists">
+													<router-link :to="{path:'/artist',query:{id:val.id}}" v-for="(val,i) in item.artists" v-bind:key="i">{{val.name}}{{i != item.artists.length-1?'/':''}}</router-link>
+												</span>
+												<span v-else>
+													<router-link :to="{path:'/artist',query:{id:val.id}}" v-for="(val,i) in item.ar" v-bind:key="i">{{val.name}}{{i != item.ar.length-1?'/':''}}</router-link>
+												</span>
+												
 											</span>
 										</div>
 										<div class="col col-5">
@@ -184,7 +195,7 @@
 						<div class="msk2-listlyric">
 							<happy-scroll color="rgba(134,134,134,0.8)" :min-length-v="0.2" size="6" :scroll-top="lyricPheight" smaller-move-v="start"  resize hide-horizontal ref="lyricScroll">
 								<div class="listlyric j-flag" id="j-lyric">
-									<p class="j-flag " ref="lyricLine"  :class="{'z-sel': currentLineNum == index}" :data-time="item[0]"  v-for="(item,index) in lyric"  v-bind:hidden="item[0] == false">{{item[1]}}</br>{{ item[2]? item[2]:''}}</p>
+									<p class="j-flag " ref="lyricLine"  :class="{'z-sel': currentLineNum == index}" :data-time="item[0]"  v-for="(item,index) in lyric"  v-bind:hidden="item[0] == false" v-bind:key="index">{{item[1]}}<br>{{ item[2]? item[2]:''}}</p>
 									<!--<p class="j-flag " ref="lyricLines"  :class="{'z-sel': currentLineNum == index}" :data-time="item[0]"  v-for="(item,index) in tlyric"  v-bind:hidden="item.length == 1" v-if="tlyric.length != 0">{{item[1]}}</p>-->
 									<!--暂无歌词-->
 									<div class="nocnt nolyric" v-bind:hidden="!lyricHidden">
@@ -292,7 +303,7 @@
 					</div>
 					<div class="j-flag">
 						<ul>
-							<li :data-id="item.id" class="xtag" v-for="item in userDataList" @click.stop="scSuccess($event)">
+							<li :data-id="item.id" class="xtag" v-for="(item,index) in userDataList" @click.stop="scSuccess($event)" v-bind:key="index">
 								<div class="item f-cb">
 									<div class="left">
 										<span class="avatar">

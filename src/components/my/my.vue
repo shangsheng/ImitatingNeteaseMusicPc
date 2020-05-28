@@ -30,7 +30,7 @@
 							</span>
 						</h2>
 						<ul class="j-flag f-cb" >
-							<li class="j-iflag " :class="{'z-selected':itemz.num == indexZn}"  :data-res-index="indexZ" v-for="(itemz,indexZ) of item.cHeaderData">
+							<li class="j-iflag " :class="{'z-selected':itemz.num == indexZn}"  :data-res-index="indexZ" v-for="(itemz,indexZ) of item.cHeaderData" v-bind:key="indexZ">
 								<div class="item f-cb" :data-res-id="itemz.id" @click.stop="getMyHttp($event)">
 									<div class="left" @click.stop="getMyHttp($event)">
 										<span class="avatar" @click.stop="getMyHttp($event)">

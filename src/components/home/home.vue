@@ -1,12 +1,12 @@
 <template>
-	<div id="home"v-wechat-title="this.title" >
+	<div id="home" v-wechat-title="this.title" >
 		<div class="n-ban d-flag " id="index-banner">
 			
     		<div class="wrap f-pr">
     			<div class=" wr" v-if="banners.length>0">
 					 <div v-swiper:mySwiper="swiperOption" >
 					    <div class="swiper-wrapper"  >
-					      <div class="swiper-slide" v-for="(banner,index) in banners"  :data-targetType = 'banner.targetType' :data-href="banner.url">
+					      <div class="swiper-slide" v-for="(banner,index) in banners"  :data-targetType = 'banner.targetType' :data-href="banner.url" v-bind:key="index">
 					        <router-link v-for = "item in bannersType"  :to="{path:item.path,query:{id:banner.encodeId}}"   v-if="item.targetType == banner.targetType && item.targetType != 3000">
 					        	<img :src="banner.imageUrl">
 					        </router-link>
@@ -18,8 +18,8 @@
 	    				
 					    <div class="swiper-pagination"></div>
 					 </div>
-					 <a href="javascript:void(0);" class="swiper-button-prev"><</a>
-	    			 <a href="javascript:void(0);" class="swiper-button-next">></a>
+					 <a href="javascript:void(0);" class="swiper-button-prev">&lt;</a>
+	    			 <a href="javascript:void(0);" class="swiper-button-next">&gt;</a>
 				</div>
 				<div class="u-load s-fc4" v-else>
 					<i class="icn"></i>			
@@ -44,7 +44,7 @@
 		    							<router-link to="/discover/playlist/" class="tit f-ff2 f-td">热门推荐</router-link>
 		    							<div class="tab">
 		    								
-		    								<div class="tab-list" v-for="(item, index) of catList" >
+		    								<div class="tab-list" v-for="(item, index) of catList" v-bind:key="index">
 		    									<router-link :to="{path:item.path,query:{cat:item.cat}}" class="s-fc3">{{item.cat}}</router-link>
 		    									<span class="line"  v-bind:hidden=" index == catList.length-1">|</span>
 		    								</div>
@@ -55,7 +55,7 @@
 			    						</span>
 		    						</div>
 		    						<ul class="m-cvrlst f-cb" v-if="hotTj.length>0">
-		    							<li v-for="item of hotTj">
+		    							<li v-for="(item,index) of hotTj" v-bind:key="index">
 		    								<div class="u-cover u-cover-1">
 		    									<img :src="item.picUrl"/>
 		    									<i class="u-jp u-icn2 u-icn2-jp3"  :class="{'hidden':!item.highQuality}"></i>
@@ -97,7 +97,7 @@
 		    									根据你的口味生成，<br>每天6:00更新
 		    								</p>
 		    							</li>
-		    							<li v-for="(item,index) in resource">
+		    							<li v-for="(item,index) in resource" v-bind:key="index">
 		    								<div class="u-cover u-cover-1">
 		    									<img :src="item.picUrl"/>
 		    									<router-link :to="{path:'/playlist',query:{id:item.id}}" class="msk" title="item.name"></router-link>
@@ -175,7 +175,7 @@
 			    						</span>
 		    						</div>
 		    						<div class="n-bilst" v-if="homeLists.length>0">
-		    							<dl class="blk" v-for="(item,index ) in homeLists"  :class="{'blk-1':index == homeLists.length-1}">
+		    							<dl class="blk" v-for="(item,index ) in homeLists"  :class="{'blk-1':index == homeLists.length-1}" v-bind:key="index">
 		    								<dt class="top" >
 		    									<div class="cver u-cover u-cover-4">
 		    										<img :src="item.playlist.coverImgUrl" class="j-img"/>
@@ -193,7 +193,7 @@
 		    								</dt>
 		    								<dd>
 		    									<ol>
-		    										<li v-for="(list,num) of item.playlist.tracks"  v-if="num < 10" onmouseover="this.className='z-hvr'" onmouseout="this.className=''">
+		    										<li v-for="(list,num) of item.playlist.tracks" v-bind:key="num"   onmouseover="this.className='z-hvr'" onmouseout="this.className=''">
 		    											<span class="no " :class="{'no-top': num<=2}">{{num+1}}</span>
 		    											<router-link :to="{path:'/song',query:{id:list.id}}" :title="list.name" class="nm s-fc0 f-thide">{{list.name}}</router-link>
 		    											<div class="oper">
@@ -247,7 +247,7 @@
 	    						</div>
 	    					</div>
 	    					<ul class="dny s-fc3 f-cb">
-	    						<li class="fst">
+	    						<li class="fst"> 
 	    							<router-link to="{path:'/user/event',query:{id:loginData.profile.userId}}">
 	    								<strong>{{loginData.profile.eventCount}}</strong>
 	    								<span>动态</span>
@@ -512,6 +512,7 @@
 						
 						item.type = 18
 					})
+					res.data.playlist.tracks = res.data.playlist.tracks.slice(0,10);
 		         	that.homeLists.push(res.data)
 		         	console.log(that.homeLists)
 		         }).catch(res=>{

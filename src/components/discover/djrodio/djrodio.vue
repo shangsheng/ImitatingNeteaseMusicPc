@@ -12,7 +12,7 @@
 							<router-link to="/discover/djradio/recommend" class="more s-fc3">更多</router-link>
 						</div>
 						<ul class="m-plylist toplist">
-							<li class="itm " :class="{'bg':index%2 != 0}" v-for="(item,index) in djRecommended">
+							<li class="itm " :class="{'bg':index%2 != 0}" v-for="(item,index) in djRecommended" v-bind:key="index">
 								<span class="cvr u-cover u-cover-tiny f-fl cursor">
 									<img :src="item.coverUrl"/>
 									<i class="ply f-pa f-dn f-alpha cursor" :data-res-id="item.id" data-res-type="17" data-res-action="play" @click.stop="plays($event)"></i>
@@ -41,7 +41,7 @@
 							<router-link to="/discover/djradio/rank" class="more s-fc3">更多</router-link>
 						</div>
 						<ul class="m-plylist toplist toplist-r">
-							<li class="itm" :class="{'bg':index%2 != 0}" v-for="(item,index) of djRank">
+							<li class="itm" :class="{'bg':index%2 != 0}" v-for="(item,index) of djRank" v-bind:key="index">
 								<div class="rank s-fc4 f-fl">
 									<em class=" f-fs1" :class="{'red':index<3}" v-if="index<9">0{{ index+1}}</em>
 									<em class=" f-fs1"  v-else>{{ index+1}}</em>
@@ -87,7 +87,7 @@
 					</div>
 					
 				</div>
-				<div class="rdimore" v-for="item in category">
+				<div class="rdimore" v-for="(item,index) in category" v-bind:key="index">
 					<div class="u-title f-cb">
 						<div class="u-title f-cb">
 							<h3>
@@ -102,17 +102,19 @@
 						
 					</div>
 					<ul class="rdilist f-cb" v-if="item.rdimore">
-							<li v-for="(obj,index) of item.rdimore" v-if="index<4"  :class="{'borderBottomColor':index==2||index==3}">
-								<router-link :to="{path:'/djradio',query:{id:obj.id}}" class="cvr u-cover u-cover-rdi f-fl">
-									<img :src="obj.picUrl"/>
-								</router-link>
-								<div class="cnt">
-									<h3 class="f-fs3">
-										<router-link :to="{path:'/djradio',query:{id:obj.id}}" class="s-fc1" :title="obj.name">{{obj.name}}</router-link>
-									</h3>
-									<p class="note s-fc4">
-										{{obj.rcmdtext}}
-									</p>
+							<li v-for="(obj,index) of item.rdimore"   :class="{'borderBottomColor':index==2||index==3}" v-bind:key="index">
+								<div v-if="index<4">
+									<router-link :to="{path:'/djradio',query:{id:obj.id}}" class="cvr u-cover u-cover-rdi f-fl">
+										<img :src="obj.picUrl"/>
+									</router-link>
+									<div class="cnt">
+										<h3 class="f-fs3">
+											<router-link :to="{path:'/djradio',query:{id:obj.id}}" class="s-fc1" :title="obj.name">{{obj.name}}</router-link>
+										</h3>
+										<p class="note s-fc4">
+											{{obj.rcmdtext}}
+										</p>
+									</div>
 								</div>
 							</li>
 						</ul>

@@ -10,7 +10,7 @@
 						</h3>
 					</div>
 					<ul class="n-favrdi f-cb j-flag">
-						<li class="z-flag" v-for="(item,index) in radioData.djRadios">
+						<li class="z-flag" v-for="(item,index) in radioData.djRadios" v-bind:key="index">
 							<router-link :to="{path:'/djradio',query:{id:item.id}}" class="cvr u-cover u-cover-3 f-fl">
 								<img :src="item.picUrl"/>
 								<i class="u-bub " v-if="item.newProgramCount>0">

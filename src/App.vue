@@ -13,7 +13,7 @@
       </back-to-top>
     <!--</el-tooltip>-->
     <!--底部播放组件-->
-		<my-play ></my-play>
+		<my-play v-if="playShow"></my-play>
   </div>
 </template>
 
@@ -23,7 +23,8 @@ export default {
   name: 'App',
   provide () {
     return {
-      reload: this.reload
+      reload: this.reload,
+      playHidden:this.playHidden
     }
   },
   data() {
@@ -39,19 +40,40 @@ export default {
       },
       isRouterAlive: true,
       isRouterMain:true,
+      playShow:true,
     }
   },
   components: {
     BackToTop
+  },
+  created:function (){
+    this.myPlay()
   },
   methods: {
     reload () {
       this.isRouterAlive = false
       this.$nextTick(function () {
         this.isRouterAlive = true
+        
       })
-    }
-   
+    },
+    myPlay(){
+      console.log(this.$route)
+      if(this.$route.name === 'mv'|| this.$route.name === 'video'){
+        this.playShow = false
+      }
+    },
+   playHidden(){
+     
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+        if(this.$route.name === 'mv'|| this.$route.name === 'video'){
+          this.playShow = false
+        }else{
+          this.playShow = true
+        }
+      })
+   }
   }
 }
 </script>

@@ -11,7 +11,7 @@
 									{{mvData.name}}
 								</h2>
 								<span class="name" :title="mvData.artistName">
-									<router-link :to="{path:'/artist',query:{id:item.id}}" :title="item.name" class="s-fc7" v-for="(item,index) in mvData.artists">{{index==mvData.artists.length-1&&item.name || (item.name+'/')}}</router-link>
+									<router-link :to="{path:'/artist',query:{id:item.id}}" :title="item.name" class="s-fc7" v-for="(item,index) in mvData.artists" v-bind:key="index">{{index==mvData.artists.length-1&&item.name || (item.name+'/')}}</router-link>
 								</span>
 							</div>
 							<div class="mv" :data-mid="mvData.id" :data-duration="mvData.duration"  data-flashvars="">
@@ -25,9 +25,9 @@
 					                		@loadedmetadata="onLoadedmetadata"
 					                		@error="onError"
 					                		@progress="onProgress"
-					                		
+					                		@ended="ended"
 					                		preload="auto"
-					                		:src="mvData.brs[jOptions[optionsNums].brs]"
+					                		:src="mvData.url"
 					                		>
 					                		<!--<source  :src="mvData.brs[jOptions[optionsNums].brs]" type="video/mp4">-->
 					                		<!--Your browser does not support HTML5 video.-->
@@ -136,7 +136,7 @@
 														<span class="j-label label">{{jOptions[optionsNums].name}}</span>
 													</div>
 													<ul class="j-options options" >
-														<li class="itm " v-for="(items,indexn) in jOptions" :class="{'z-sel':optionsNums == indexn}">
+														<li class="itm " v-for="(items,indexn) in jOptions" :class="{'z-sel':optionsNums == indexn}" v-bind:key="indexn">
 															<span class="label">{{items.name}}</span>
 															<span class="cursor ffull" data-action="video-br" :data-index="indexn" @click.stop="clickDefinition(indexn)"></span>
 														</li>
@@ -218,7 +218,7 @@
 						</span>
 					</h3>
 					<ul class="n-mvlist f-cb" v-if="xgmv">
-						<li v-for="(item,index) in xgmv">
+						<li v-for="(item,index) in xgmv" v-bind:key="index">
 							<div class="u-cover u-cover-8 f-fl">
 								<img :src="item.cover"/>
 								<p class="ci u-msk u-msk-1">
@@ -235,7 +235,7 @@
 								<p class="s-fc4">{{item.duration}}</p>
 								<p class="s-fc4 f-thide" v-if="item.artists.length>0">
 									by
-									<router-link :to="{path:'/artist',query:{id:arTime.id}}" class="s-fc4" v-for="(arTime,aIndex) in item.artists">{{aIndex ==  item.artists.length-1 && arTime.name || (arTime.name + '-')}}</router-link>
+									<router-link :to="{path:'/artist',query:{id:arTime.id}}" class="s-fc4" v-for="(arTime,aIndex) in item.artists" v-bind:key="aIndex">{{aIndex ==  item.artists.length-1 && arTime.name || (arTime.name + '-')}}</router-link>
 								</p>
 							</div>
 						</li>
@@ -255,6 +255,7 @@
 
 <script>
 	import eventVue from '../../../static/js/eventVue.js'
+// import func from '../../../vue-temp/vue-editor-bridge';
 	export default {
   name: 'mv',
   data () {
@@ -300,11 +301,12 @@
 	    faDis:false,
 	    CancelFavorite:true,
 	    mNavfst:'fxyy',
-	    navBul:false,
+		navBul:false,
+		setTime:null,
     }
      
   },
-  inject:['reload'],//app.vueҳ���ж����¼���
+  inject:['reload','playHidden'],//app.vueҳ���ж����¼���
    beforeCreate: function () {
 //          debugger;
         },
@@ -312,6 +314,7 @@
 //          debugger;
 		let id = this.$route.query.id;
 		this.mvHttp();
+		this.playHidden();
 		this.$root.eventVue.$emit('zSltV',this.zSlt);
 	    this.$root.eventVue.$emit('navBul',this.navBul);
 	    this.$root.eventVue.$emit('mNavfst',this.mNavfst);
@@ -355,6 +358,7 @@
 				})
 				_this.xgmv = res.mvs
 			})
+			
         },
         deactivated: function(){
             alert("keepAliveͣ��");
@@ -389,6 +393,7 @@
 		
 		},
         methods:{
+			//播放视频的清晰度
         	clickDefinition(num){
         		this.optionsNums = num
         		
@@ -418,19 +423,48 @@
 				     res.data.artistsName = artistsName
 				     res.data.playCount =  _this.$Playback(res.data.playCount)
 				     _this.title = res.data.name
-				     _this.mvData = res.data
+				     
 				    
+					_this.mvData = res.data
+					_this.setTime = setTimeout(()=>{
+						_this.mvIfo(id)
+						
+					},1000)
+					
 			    })
-        	},
+			},
+			mvIfo(id){
+				let _this = this;
+	_this.getHttp('/mv/detail/info?mvid='+id,function(resInfo){
+							console.log(resInfo)
+							_this.mvData.likeCount = resInfo.likedCount
+							_this.mvUrl(id)
+					})
+			},
+			mvUrl(id){
+				let _this = this;
+				this.getHttp('/mv/url?id='+id,function(res){
+					console.log(res)
+					_this.mvData.r = res.data.r;
+					_this.mvData.url = res.data.url;
+					_this.mvData.size = res.data.size;
+					clearTimeout(_this.setTime);
+					_this.$forceUpdate();
+				})
+			},
         	getHttp(href,callBack){
         		var that = this;
         		this.$http({
 		         	method:'get',
-		         	url:that.$host+href
+					 url:that.$host+href,
+					 error:function(res){
+						 console.log(res)
+					 }
 		         }).then(function(res){
 //		         	console.log(res.data)
 		         	callBack(res.data)
 		         }).catch(res=>{
+					 console.log(res)
 		         	console.log('请求失败：'+res);
 		         })
         	},
@@ -635,7 +669,8 @@
         	},
         	//播放结束
         	ended(){
-        		_this.video.playing = false;
+				console.log(1)
+        		this.video.playing = false;
         	},
         	likeClick($event){
         		if(this.logH){

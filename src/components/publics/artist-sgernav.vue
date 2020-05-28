@@ -12,14 +12,16 @@
 					</li>
 				</ul>
 				<!--循环数据-->
-				<div class="blk" v-if="artistList" v-for="item in artistList">
-					<h2 class="tit">{{item.name}}</h2>
-					<ul class="nav f-cb">
-						<li v-for="obj in item.listCat">
-							<router-link :to="{path:'/discover/artist/cat/',query:{id:obj.cat}}" class="cat-flag " :data-res-cat="obj.cat" :class="{'z-slt':zSlts == obj.zSlt}" >{{obj.name}}</router-link>
-						</li>
-						
-					</ul>
+				<div v-if="artistList">
+					<div class="blk"  v-for="(item,index) in artistList" v-bind:key="index">
+						<h2 class="tit">{{item.name}}</h2>
+						<ul class="nav f-cb">
+							<li v-for="(obj,oIndex) in item.listCat" v-bind:key="oIndex">
+								<router-link :to="{path:'/discover/artist/cat/',query:{id:obj.cat}}" class="cat-flag " :data-res-cat="obj.cat" :class="{'z-slt':zSlts == obj.zSlt}" >{{obj.name}}</router-link>
+							</li>
+							
+						</ul>
+					</div>
 				</div>
 				<div class="u-load s-fc4" v-else>
 					<i class="icn"></i>			

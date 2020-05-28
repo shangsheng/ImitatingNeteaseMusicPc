@@ -10,14 +10,16 @@
 						</h3>
 					</div>
 					<ul class="m-rdilist f-cb" v-if="djNewCategory">
-						<li v-for="(item,index) of djNewCategory" v-if="index<5">
-							<router-link :to="{path:'/djradio',query:{id:item.id}}" class="u-cover u-cover-rdi2">
-								<img :src="item.picUrl"/>
-							</router-link>
-							<h3 class="f-fs2">
-								<router-link :to="{path:'/djradio',query:{id:item.id}}" :title="item.name" class="s-fc1">{{item.name}}</router-link>
-							</h3>
-							<p class="f-thide2 s-fc4">{{item.rcmdtext}}</p>
+						<li v-for="(item,index) of djNewCategory" v-bind:key="index">
+							<div v-if="index<5">
+								<router-link :to="{path:'/djradio',query:{id:item.id}}" class="u-cover u-cover-rdi2">
+									<img :src="item.picUrl"/>
+								</router-link>
+								<h3 class="f-fs2">
+									<router-link :to="{path:'/djradio',query:{id:item.id}}" :title="item.name" class="s-fc1">{{item.name}}</router-link>
+								</h3>
+								<p class="f-thide2 s-fc4">{{item.rcmdtext}}</p>
+							</div>
 						</li>
 					</ul>
 					<div class="u-load s-fc4" v-else>
@@ -40,7 +42,7 @@
 						</div>
 					</div>
 					<ul class="rdilist rdilist-2 f-cb" v-if="djRdilist">
-						<li v-for="(item,index) in djRdilist">
+						<li v-for="(item,index) in djRdilist" v-bind:key="index">
 							<router-link :to="{path:'/djradio',query:{id:item.id}}" class="cvr u-cover u-cover-rdi f-fl">
 								<img :src="item.picUrl"/>
 							</router-link>

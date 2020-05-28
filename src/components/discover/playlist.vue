@@ -36,7 +36,7 @@
 									<play-songs v-bind:playlistArr="playSongs" v-if="playSongs"></play-songs>
 									<div class="tags f-cb" v-if="playlist.tags.length != 0">
 										<b>标签:</b>
-										<router-link :to="{path:'/discover/playlist/',query:{cat:item,order:'hot'}}" class="u-tag" v-for="item of playlist.tags"><i>{{item}}</i></router-link>
+										<router-link :to="{path:'/discover/playlist/',query:{cat:item,order:'hot'}}" class="u-tag" v-for="(item,index) of playlist.tags" v-bind:key="index"><i>{{item}}</i></router-link>
 									</div>
 									<p class="intr f-brk" :class="{'f-hide':!fHide}" v-if="playlist.description">介绍: <span v-html="cutStringComent(playlist.description)"></span></p>
 									<p class="intr f-brk " :class="{'f-hide':fHide}">介绍: <span v-html="playlist.description"></span></p>
@@ -98,7 +98,7 @@
 							<span class="f-fl">相关推荐</span>
 						</h3>
 						<ul class="m-rctlist f-cb">
-							<li v-for="item in relatedPlaylist">
+							<li v-for="(item,index) in relatedPlaylist" v-bind:key="index">
 								<div class="cver u-cover u-cover-3">
 									<router-link :to="{path:'/playlist',query:{id:item.id}}"  :data-res-id="item.id" :data-res-type="13" data-res-action="log"  :title="item.name">
 										<img :src="item.coverImgUrl"/>

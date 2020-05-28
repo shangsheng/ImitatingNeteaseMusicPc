@@ -67,7 +67,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr :class="{even:index%2==0}" v-for="(item,index) in tasteData">
+											<tr :class="{even:index%2==0}" v-for="(item,index) in tasteData" v-bind:key="index">
 												<td class="left">
 													<div class="hd ">
 
@@ -90,8 +90,11 @@
 																			{{item.name}}
 																		</b>
 																	</router-link>
-																	<span class="s-fc8" :title="item.alias" v-if="item.alias.lenth != 0" v-for="obj of item.alias">
-																		-{{obj}}
+																	
+																	<span v-if="item.alias.lenth != 0">
+																		<span class="s-fc8" :title="item.alias"  v-for="(obj,index) of item.alias" v-bind:key="index">
+																			-{{obj}}
+																		</span>
 																	</span>
 																	<span class="mv" v-if="item.mvid" :data-res-id="item.mvid" data-res-action="mv" title="播放mv">mv</span>
 																</span>
@@ -112,8 +115,8 @@
 													<div class="text">
 
 														<span :title="item.arLength">
-												<router-link :to="{path:'/artist',query:{id:obj.id}}" v-for="(obj,oindex) in item.artists">
-													{{obj.name}} <span class="s-fc8" :title="tn" v-for="tn of obj.tns"> - ({{tn}})</span> <i v-if="oindex != item.artists.length -1">/</i>
+												<router-link :to="{path:'/artist',query:{id:obj.id}}" v-for="(obj,oindex) in item.artists" v-bind:key="oindex">
+													{{obj.name}} <span class="s-fc8" :title="tn" v-for="(tn,index) of obj.tns" v-bind:key="index"> - ({{tn}})</span> <i v-if="oindex != item.artists.length -1">/</i>
 														</router-link>
 														</span>
 
@@ -182,7 +185,7 @@
 		</div>
 		
 	</div>
-	</div>
+	<!-- </div> -->
 </template>
 
 <script>

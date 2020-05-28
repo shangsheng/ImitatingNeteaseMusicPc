@@ -20,7 +20,7 @@
 								<em class="u-icn u-icn-38 u-icn-arr"></em>
 							</i>
 							<ul class="filter j-slt">
-								<li class="choose " :class="{'z-select':choseMes == item.title}" :data-res-type="item.type" data-res-action="choose" :data-res-value="item.title" v-for="item of chooseSelect">
+								<li class="choose " :class="{'z-select':choseMes == item.title}" :data-res-type="item.type" data-res-action="choose" :data-res-value="item.title" v-for="(item,index) of chooseSelect" v-bind:key="index">
 									{{item.title}}
 								</li>
 							</ul>
@@ -36,7 +36,7 @@
 						<table class="m-table m-table-1 m-table-4">
 							
 							<tbody>
-								<tr v-for="(item,index) in songsList.hotSongs" :class="{'even ':index%2==0}">
+								<tr v-for="(item,index) in songsList.hotSongs" :class="{'even ':index%2==0}" v-bind:key="index">
 									<td class="w1">
 										<div class="hd">
 											<span :data-res-id="item.id" :class="{'ply-z-slt':songsNum == index}" data-res-type="18" data-res-action="play" data-res-from="2" :data-res-data="songsList.artist.id" class="ply " @click.stop="plays($event)" :data-res-index="index">&nbsp;</span>

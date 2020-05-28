@@ -6,20 +6,20 @@
 					<div class="copy">
 						
 						<ul class="link clearfix">
-							<li v-for="item in condition">
+							<li v-for="(item,index) in condition" v-bind:key="index">
 								<span @click.stop="clickHref($event)" :data-href="item.href" class="item s-fc4 cursor">{{item.name}}</span>
 								<span class="line">|</span>
 							</li>
 						</ul>
 						<ul class="right s-fc3 clearfix">
-							<li v-for="(item,index) in copyright">
+							<li v-for="(item,index) in copyright" v-bind:key="index">
 								<span class="span" :class="{sep:index == 0}" v-if="!item.href">{{item.name}}</span>
 								
 								<span @click.stop="clickHref($event)" :data-href="item.href" class="alink s-fc3 cursor" data-target="_blank" v-else>{{item.name}}</span>
 							</li>
 						</ul>
 						<ul class="contact s-fc3 clearfix">
-							<li v-for="(item,index) of complaints">
+							<li v-for="(item,index) of complaints" v-bind:key="index">
 								<span class="span" :class="{sep:index == 0}" v-if="!item.href">{{item.name}}</span>
 								
 								<span @click.stop="clickHref($event)" :data-href="item.href" class="alink s-fc3 cursor" data-target="_blank" v-else>{{item.name}}</span>
@@ -27,7 +27,7 @@
 						</ul>
 					</div>
 					<ul class="enter f-fr ">
-						<li class="unit" v-for="item in authentication">
+						<li class="unit" v-for="(item,index) in authentication" v-bind:key="index">
 							<span class="logo logonew  f-tid cursor" :class="'logo-${item.name}'" @click.stop="clickHref($event)" :data-href="item.href"></span>
 							<span class="tt 'tt-${item.name}'"></span>
 						</li>

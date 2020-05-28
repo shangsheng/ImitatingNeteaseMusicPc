@@ -71,7 +71,7 @@
 						<router-link :to="{path:'/user/home',query:{id:logoData.profile.userId}}" class="name f-thide f-fl f-tdn f-hide">{{logoData.profile.nickname}}</router-link>
 						<div class="m-tlist m-tlist-lged j-uflag" v-bind:hidden="loginD">
 							<ul class="f-cb lb mg">
-								<li v-for=" item of lbmg">
+								<li v-for=" (item,index) of lbmg" v-bind:key="index">
 									<router-link :to="{path:item.path,query:{id:logoData.profile.userId}}" class="item-1">
 										<i class="icn" :class="[item.icon]"></i>
 										<em>{{item.name}}</em>
@@ -79,7 +79,7 @@
 								</li>
 							</ul>
 							<ul class="f-cb ltb mg">
-								<li v-for="item in ltbmg">
+								<li v-for="(item,index) in ltbmg" v-bind:key="index">
 									<router-link :to="{path:item.path,query:{id:logoData.profile.userId}}" class="item-2">
 										<i class="icn" :class="[item.icon]"></i>
 										<em>{{item.name}}</em>
@@ -100,14 +100,15 @@
 						<span class="link-dl" data-idName="l" @click.stop="logShow($event)">登录</span>
 						<div class="m-tlist" v-bind:class="{show:dllit , hidden:disnone}">
 							<ul class="f-cb">
-								<li class="lb" v-for="item in logoMode" v-if="item.target == '_self'" :data-idName="item.idName" @click.stop="logShow($event)">
-									<span><i class="icon" :class=" [item.icon]" :data-idName="item.idName" @click.stop="logShow($event)"></i><em :data-idName="item.idName" @click.stop="logShow($event)">{{item.name}}</em></span>
-								</li>
-								<li class="ltb" v-else :data-idName="item.idName">
-									<router-link :to="{path:'/api/sns/authorize',query:{id:item.id}}" target= 'item.target'>
+								<li :class="[item.target == '_self'?'lb':'ltb']" v-for="(item,index) in logoMode" v-bind:key="index"  :data-idName="item.idName" @click.stop="logShow($event)">
+									<span v-if="item.target == '_self'"><i class="icon" :class=" [item.icon]" :data-idName="item.idName" @click.stop="logShow($event)"></i><em :data-idName="item.idName" @click.stop="logShow($event)">{{item.name}}</em></span>
+									<router-link v-else :to="{path:'/api/sns/authorize',query:{id:item.id}}" target= 'item.target'>
 										<span><i class="icon"  :class=" [item.icon]"></i><em>{{item.name}}</em></span>
 									</router-link>
 								</li>
+								<!-- <li class="ltb"  :data-idName="item.idName">
+									
+								</li> -->
 								<!--<li class="lb">
 									<span><i class="icon "></i><em>QQ登录</em></span>
 								</li>
@@ -147,16 +148,16 @@
 									</router-link>
 								</p>
 								<div class="rap">
-									<div class="itm f-cb" v-for="(item,index) in serachdata.order">
+									<div class="itm f-cb" v-for="(item,index) in serachdata.order" v-bind:key="index">
 										<h3 class="hd">
 											<i class="icn u-icn "   v-bind:class="{' u-icn-26': item === 'songs', 'u-icn-27': item === 'artists','u-icn-28': item === 'albums','u-icn-96': item === 'mvs','u-icn-29': item === 'playlists' }"></i>
 											
 											<em class="fl">{{searchList[item]}}</em>
 										</h3>
 										<ul class="f-cb" :class="{odd: index%2!= 0}">
-											<li v-for=" keys in serachdata[item]" >
+											<li v-for=" (keys,keyIndex) in serachdata[item]" v-bind:key="keyIndex">
 												<router-link :to="{path:'/songs',query:{id:keys.id}}" v-if="item === 'songs'" >
-													<i v-html="searchValue(keys.name,values)"></i>- <i v-for="songsA in keys.artists" v-html="searchValue(songsA.name,values)"></i>
+													<i v-html="searchValue(keys.name,values)"></i>- <i v-for="(songsA,aIndex) in keys.artists" v-bind:key="aIndex" v-html="searchValue(songsA.name,values)"></i>
 													
 												</router-link>
 												<router-link :to="{path:'/artist',query:{id:keys.id}}" v-else-if="item === 'artists'" >
@@ -167,10 +168,10 @@
 													
 												</router-link>
 												<router-link :to="{path:'/mv',query:{id:keys.id}}" v-else-if="item === 'mvs'">
-													<i v-html="searchValue(keys.name,values)"></i>- <i v-for="mvsA in keys.artists" v-html="searchValue(mvsA.name,values)"></i>
+													<i v-html="searchValue(keys.name,values)"></i>- <i v-for="(mvsA,aIndex) in keys.artists" v-bind:key="aIndex" v-html="searchValue(mvsA.name,values)"></i>
 													
 												</router-link>
-												<router-link :to="{path:'/playlist',query:{id:keys.id}}" v-else="item === 'playlists'">
+												<router-link :to="{path:'/playlist',query:{id:keys.id}}" v-else-if="item === 'playlists'">
 													<i v-html="searchValue(keys.name,values)"></i>
 													
 												</router-link>
@@ -260,7 +261,7 @@
       mNavfst:'fxyy',
     }
   },
-  inject:['reload'],
+  inject:['reload','playHidden'],
    beforeCreate: function () {
 //          debugger;
         },
@@ -281,15 +282,18 @@
 		 
 		 eventVue.$on('zSltV', (data) => {
 	        console.log(data)
-	        this.zSlt = data
+			this.zSlt = data;
+			this.playHidden();
 	      })
 		 eventVue.$on('navBul', (data) => {
 	        console.log(data)
-	        this.navBul = data
+			this.navBul = data;
+			this.playHidden();
 	      })
 		  eventVue.$on('mNavfst', (data) => {
 	        console.log(data)
-	        this.mNavfst = data
+			this.mNavfst = data;
+			this.playHidden();
 	      })
         },
         beforeMount: function () {

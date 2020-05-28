@@ -40,7 +40,7 @@
 					</div>
 					<div class="cmmts j-flag">
 						<h3 class="u-hd4" v-if="commentData.moreHot">精彩评论</h3>
-						<div class="itm" :data-id="item.commentId" v-for="item in commentData.hotComments">
+						<div class="itm" :data-id="item.commentId" v-for="(item,index) in commentData.hotComments" v-bind:key="index">
 							<div class="head">
 								<router-link :to="{path:'/user/home',query:{id:item.user.userId}}">
 									<img :src="item.user.avatarUrl"/>
@@ -55,15 +55,17 @@
 										:{{item.content}}
 									</div>
 								</div>
-								<div class="que f-brk f-pr s-fc3" v-if="item.beReplied.length != 0" v-for="beItem of item.beReplied">
-									<span class="darr">
-										<i class="bd">◆</i>
-										<i class="bg">◆</i>
-									</span>
-									<router-link :to="{path:'/user/home',query:{id:beItem.user.userId}}" class="s-fc7">{{beItem.user.nickname}}</router-link>
-									<sup class="u-icn u-icn-84" v-if="beItem.user.userType === 200"></sup>
-									<img src="https://p1.music.126.net/y8pM-M1mytg6B1ThedCbJA==/109951163709550847.png" v-if="beItem.user.vipType === 11" class="brand-tag brand-vip"/>
-									:{{beItem.content}}
+								<div class="que f-brk f-pr s-fc3" v-if="item.beReplied.length != 0">
+									<div  v-for="(beItem,index) of item.beReplied" v-bind:key="index">
+										<span class="darr">
+											<i class="bd">◆</i>
+											<i class="bg">◆</i>
+										</span>
+										<router-link :to="{path:'/user/home',query:{id:beItem.user.userId}}" class="s-fc7">{{beItem.user.nickname}}</router-link>
+										<sup class="u-icn u-icn-84" v-if="beItem.user.userType === 200"></sup>
+										<img src="https://p1.music.126.net/y8pM-M1mytg6B1ThedCbJA==/109951163709550847.png" v-if="beItem.user.vipType === 11" class="brand-tag brand-vip"/>
+										:{{beItem.content}}
+									</div>
 								</div>
 								<div class="rp">
 									<div class="time s-fc4">
@@ -78,7 +80,7 @@
 							</div>
 						</div>
 						<h3 class="u-hd4" v-if="commentData.total>0">最新评论({{commentData.total}})</h3>
-						<div class="itm" :data-id="item.commentId" v-for="item in commentData.comments">
+						<div class="itm" :data-id="item.commentId" v-for="(item,index) in commentData.comments" v-bind:key="index">
 							<div class="head">
 								<router-link :to="{path:'/user/home',query:{id:item.user.userId}}">
 									<img :src="item.user.avatarUrl"/>
@@ -93,15 +95,17 @@
 										:{{item.content}}
 									</div>
 								</div>
-								<div class="que f-brk f-pr s-fc3" v-if="item.beReplied.length != 0" v-for="beItem of item.beReplied">
-									<span class="darr">
-										<i class="bd">◆</i>
-										<i class="bg">◆</i>
-									</span>
-									<router-link :to="{path:'/user/home',query:{id:beItem.user.userId}}" class="s-fc7">{{beItem.user.nickname}}</router-link>
-									<sup class="u-icn u-icn-84" v-if="beItem.user.userType === 200"></sup>
-									<img src="https://p1.music.126.net/y8pM-M1mytg6B1ThedCbJA==/109951163709550847.png" v-if="beItem.user.vipType === 11" class="brand-tag brand-vip"/>
-									:{{beItem.content}}
+								<div v-if="item.beReplied.length != 0">
+									<div class="que f-brk f-pr s-fc3"  v-for="(beItem,index) of item.beReplied" v-bind:key="index">
+										<span class="darr">
+											<i class="bd">◆</i>
+											<i class="bg">◆</i>
+										</span>
+										<router-link :to="{path:'/user/home',query:{id:beItem.user.userId}}" class="s-fc7">{{beItem.user.nickname}}</router-link>
+										<sup class="u-icn u-icn-84" v-if="beItem.user.userType === 200"></sup>
+										<img src="https://p1.music.126.net/y8pM-M1mytg6B1ThedCbJA==/109951163709550847.png" v-if="beItem.user.vipType === 11" class="brand-tag brand-vip"/>
+										:{{beItem.content}}
+									</div>
 								</div>
 								<div class="rp">
 									<div class="time s-fc4">

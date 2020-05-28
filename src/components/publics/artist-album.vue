@@ -1,7 +1,7 @@
 <template>
 	<div id="artistAlbum">
 		<ul class="m-cvrlst m-cvrlst-alb4 f-cb" v-if="artistAlbums">
-			<li v-for="item in artistAlbums.hotAlbums">
+			<li v-for="(item,index) in artistAlbums.hotAlbums" v-bind:key="index">
 				<div class="u-cover u-cover-alb3">
 					<img :src="item.picUrl"/>
 					<router-link :to="{path:'/album',query:{id:item.id}}" class="msk"></router-link>

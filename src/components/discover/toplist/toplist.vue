@@ -5,7 +5,7 @@
 				<div class="n-minelst n-minelst-2">
 					<h2 class="f-ff1">云音乐特色榜</h2>
 					<ul class="f-cb">
-						<li :data-res-id="item.id" data-res-action="href" class="mine " :class="{'z-selected':zSelected==index}" v-for="(item,index) of rankingList" v-bind:hidden="index>3" @click="toplist($event)">
+						<li :data-res-id="item.id" data-res-action="href" class="mine " :class="{'z-selected':zSelected==index}" v-for="(item,index) of rankingList" v-bind:hidden="index>3" @click="toplist($event)" v-bind:key="index">
 							<div class="item f-cb">
 								<div class="left">
 									<router-link :to="{path:'/discover/toplist',query:{id:item.id}}" class="avatar" @click.native.stop="toplist($event)">
@@ -24,7 +24,7 @@
 					</ul>
 					<h2 class="scd f-ff1 ">全球媒体榜</h2>
 					<ul class="f-cb">
-						<li :data-res-id="item.id" daa-res-action="href" class="mine " :class="{'z-selected':zSelected==index}" v-for="(item,index) of rankingList" v-bind:hidden="index<4" @click="toplist($event)">
+						<li :data-res-id="item.id" daa-res-action="href" class="mine " :class="{'z-selected':zSelected==index}" v-for="(item,index) of rankingList" v-bind:hidden="index<4" @click="toplist($event)" v-bind:key="index">
 							<div class="item f-cb">
 								<div class="left">
 									<router-link :to="{path:'/discover/toplist',query:{id:item.id}}" class="avatar" @click.native.stop="toplist($event)">
