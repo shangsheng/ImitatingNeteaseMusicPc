@@ -102,7 +102,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#signed{
 		text-align: left;
 		.g-mn2 {

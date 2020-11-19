@@ -185,7 +185,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 	.g-ft {
 	    position: relative;
 	    height: 148px;

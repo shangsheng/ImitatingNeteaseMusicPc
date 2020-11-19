@@ -30,7 +30,7 @@
 										<div class="gcnt j-flag">
 											<div class="dcntc" v-if="item.json.msg !=undefined">
 												<div class="type f-pr f-fs1">
-													<router-link to="{path:'/user/home',query:{id:item.user.userId}}">{{item.user.nickname}}</router-link>
+													<router-link :to="{path:'/user/home',query:{id:item.user.userId}}">{{item.user.nickname}}</router-link>
 													<sup class="u-icn " :class="[item.user.userType == 201&&item.user.vipType == 11?'u-icn-84':'']" v-if="item.user.userType == 201"></sup>
 													<sup class="u-icn " :class="[item.user.vipType == 11&&item.user.userType == 2||item.user.userType==10?'u-icn-1':'']" v-else-if="item.user.userType == 2"></sup>
 													<sup class="icn u-icn2 " :class="[item.user.vipType == 11||item.user.vipType == 10&&item.user.userType == 4 ||item.user.vipType == 0&&item.user.vipRights != null?'u-icn2-music2':'']" v-else></sup>
@@ -215,7 +215,7 @@
   data () {
     return {
     	pagesize:30,
-    	lasttime:0,
+    	lasttime:-1,
     	friendData:[],
     	more:false,
     	dynamicbarNew:true,
@@ -329,7 +329,7 @@
         		let that = this
         		  this.$http({
 			         	method:'get',
-			         	url:that.$host+"/event?pagesize="+that.pagesize+"&lasttime="+lasttime
+			         	url:that.$host+"/event?limit="+that.pagesize+"&lasttime="+lasttime
 			         }).then(function(res){
 			         	console.log(res.data)
 			         	that.$.each(res.data.event,function(index,el){
@@ -386,7 +386,9 @@
 //			        }
 					this.scrollB = false
 			        // 调用请求函数
-			        this.friendHttp(this.lasttime)
+			        console.log(this.lasttime)
+			        this.lasttime?this.friendHttp(this.lasttime):this.scrollB = true;
+			        
 			      }
 			    },
 			    mngHideClick(index){
@@ -432,7 +434,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" scoped>
 	#friend{
 		text-align: left;
 		.g-mn5c {

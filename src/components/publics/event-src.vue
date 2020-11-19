@@ -134,7 +134,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#event-src{
 		text-align: left;
 		 .src,  .card,  .hotrecmt .bar,  .showpic {

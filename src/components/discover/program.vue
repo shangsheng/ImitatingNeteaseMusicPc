@@ -196,8 +196,8 @@
         }
   }
 </script>
-
-<style lang="less">
+ 
+<style lang="less" >
 	#program{
 		text-align: left;
 		.m-info-program {
@@ -318,6 +318,7 @@
 			    padding-bottom: 2px;
 			    max-width: 42%;
 			    margin-right: 5px;
+			    vertical-align: middle;
 			}
 			p {
 			    line-height: 23px;

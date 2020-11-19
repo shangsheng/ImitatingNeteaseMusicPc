@@ -1,7 +1,7 @@
 var kvTool = {
 	maxage:259200,
 	path:"/",
-	domain:"http://192.168.1.74:3000/",
+	domain:"http://localhost:3000/",
 	secure:false,
 }
 function setCookie(k,v,options){
@@ -52,6 +52,7 @@ const removeLocalStorage = name =>{
 	window.localStorage.removeItem(name)
 }
 const localUtil = function(name,content){
+	
 	if(!content){
 		return  getLocalStorage(name)
 	}else{
@@ -62,5 +63,6 @@ export{
 	cookieUtil,
 	localUtil,
 	removeLocalStorage,
-	delCookie
+	delCookie,
+	setLocalStorage
 }

@@ -265,7 +265,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#relay-src{
 		text-align: left;
 		.pics .pic,  .showpic .slide {

@@ -116,7 +116,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-mv{
 		text-align: left;
 		.n-srchrst {

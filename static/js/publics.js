@@ -579,6 +579,20 @@ let addBr = function($br){
     return $br
 	
 }
+//字符串转换成布尔值
+let toboolean = function (val){
+   
+    if(typeof val === 'string'){
+        switch (val.toLowerCase()){
+    　　　　case "true": case 1: case "yes": return true;
+    　　　　case "false": case 0: case "no": case null: return false;
+    　　　　default:return Boolean(val);
+    　　}
+    }else{
+        return val
+    }
+　　
+}
 export  {
 	drage,
 	seehref,
@@ -599,5 +613,6 @@ export  {
 	addLinks,
 	addNameLinks,
 	addThLinks,
-	addBr
+	addBr,
+    toboolean
 }

@@ -117,7 +117,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#artists{
 		text-align: left;
 		.g-mn2 {

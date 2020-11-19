@@ -536,7 +536,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" >
 	@import '../../../static/css/public.less';
 	.auto-1566780113701 {
 	    position: absolute;

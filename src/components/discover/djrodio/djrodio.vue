@@ -103,7 +103,7 @@
 					</div>
 					<ul class="rdilist f-cb" v-if="item.rdimore">
 							<li v-for="(obj,index) of item.rdimore"   :class="{'borderBottomColor':index==2||index==3}" v-bind:key="index">
-								<div v-if="index<4">
+								<div>
 									<router-link :to="{path:'/djradio',query:{id:obj.id}}" class="cvr u-cover u-cover-rdi f-fl">
 										<img :src="obj.picUrl"/>
 									</router-link>
@@ -175,12 +175,12 @@
 		         	url:that.$host + "/dj/recommend/type?type="+el.types,
 		         }).then(function(res){
 		         	console.log(res.data)
-		         	el.rdimore = res.data.djRadios
+		         	el.rdimore = res.data.djRadios.slice(0,4);
 		         }).catch(res=>{
 		         	console.log('请求失败：'+res.data+','+res.statusText);
 		         }) 
 		     })
-		        
+		     console.log(this.category)   
 		         
         },
         beforeMount: function () {
@@ -227,7 +227,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#discoverDjradio{
 		text-align: left;
 		.g-wrap {

@@ -117,7 +117,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#songs-src{
 		text-align: left;
 		.src, .m-dlist .card,  .hotrecmt .bar,  .showpic {

@@ -83,16 +83,19 @@
 								次
 							</div>
 						</div>
-						<songs-list-cashe v-bind:songsPreCahe="toplistData" v-if="toplistData"></songs-list-cashe>
+						<songs-list-cashe v-bind:songsPreCahe="toplistData" v-if="toplistData" :key="keytoplist"></songs-list-cashe>
 						<div class="u-load s-fc4" v-else>
 							<i class="icn"></i>			
 						</div>
-						<my-comments></my-comments>
+						<my-comments :key="keyComments"></my-comments>
 					</div>
 					
 				</div>
 			</div>
 			<div class="u-load s-fc4" v-else>
+				<i class="icn"></i>			
+			</div>
+			<div class="u-load s-fc4 listSongs" v-show="keyHidden">
 				<i class="icn"></i>			
 			</div>
 		</div>
@@ -121,7 +124,10 @@
         			],
         playSongs:null,
         barVoice:true,
-        keyTop:1
+        keyTop:1,
+        keyHidden:false,
+        keyComments:2,
+        keytoplist:3,
       }
     },
     inject:['reload'],
@@ -137,7 +143,8 @@
 			console.log(id)
 			this.$http({
 		         	method:'get',
-		         	url:that.$host+'/toplist'
+		         	url:that.$host+'/toplist',
+		         	emulateJSON: true
 		         }).then(function(res){
 		         	console.log(res.data)
 		         	that.$.each(res.data.list,function(index,item){
@@ -156,12 +163,12 @@
 	        				if(item.id == id){
 	        					console.log(index)
 	        					that.zSelected = index
-	        					that.topListHttp(item.idx)
+	        					that.topListHttp(item.id)
 	        					return false;
 	        				}
 	        			})
 		         	}else{
-		         		that.topListHttp(that.idx)
+		         		that.topListHttp(that.rankingList[0].id)
 		         	}
 		         }).catch(res=>{
 		         	console.log('请求失败：'+res);
@@ -194,9 +201,13 @@
         methods:{
         	topListHttp(idx){
         		var that = this;
+        		if(this.toplistData!=null){
+        		 this.keyHidden = true;
+        		}
         		this.$http({
 		         	method:'get',
-		         	url:that.$host+'/top/list?idx='+idx
+		         	url:that.$host+'/playlist/detail?id='+idx,
+		         	emulateJSON: true
 		         }).then(function(res){
 		         	console.log(res.data)
 		         	var playlistSongs = new Object();
@@ -217,7 +228,9 @@
 		         	res.data.playlist.types = 13;
 		         	res.data.playlist.froms = 31;
 		         	res.data.playlist.category = '排行榜';
-		         	that.toplistData = res.data.playlist
+		         	// res.data.playlist.playCount = that.$Playback(res.data.playlist.playCount);
+		         	that.toplistData = res.data.playlist;
+		         	
 		         	console.log(that.toplistData)
 		         }).catch(res=>{
 		         	console.log('请求失败：'+res);
@@ -241,7 +254,7 @@
 					this.$.each(that.rankingList,function(index,item){
         				if(item.id == id){
         					that.zSelected = index
-        					that.topListHttp(item.idx)
+        					that.topListHttp(item.id)
         					return false;
         				}
         			})
@@ -257,13 +270,16 @@
 
             },
           	toplistData(){
-          		++this.keyTop
+          		++this.keyTop;
+          		++this.keyComments;
+          		++this.keytoplist;
+          		this.keyHidden = false;
           	}
         }
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#discoverToplist{
 		text-align: left;
 		.g-sd3 {
@@ -439,6 +455,11 @@
 			.more {
 			    margin-top: 5px;
 			}
+		}
+		.listSongs{
+			position:fixed;
+			top: 50%;
+			left: 50%;
 		}
 	}
 </style>

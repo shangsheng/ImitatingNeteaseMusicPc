@@ -175,7 +175,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-playlist{
 		.n-srchrst {
 		    margin-top: 20px;

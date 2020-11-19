@@ -49,6 +49,7 @@
         ],
         lZslt:'热度',
         catName:'',
+        typeArea:[{catId:1001,area:7,type:1},{catId:1002,area:7,type:2},{catId:1003,area:7,type:3},{catId:2001,area:96,type:1},{catId:2002,area:96,type:2},{catId:2003,area:96,type:3},{catId:6001,area:8,type:1},{catId:6002,area:8,type:2},{catId:6003,area:8,type:3},{catId:7001,area:16,type:1},{catId:7002,area:16,type:2},{catId:7003,area:16,type:3},{catId:4001,area:0,type:1},{catId:4002,area:0,type:2},{catId:4003,area:0,type:3}]
       }
     },
     components: {
@@ -98,11 +99,18 @@
         methods:{
         	getHttp(initial){
         		var that = this;
-        		var catId = this.$route.query.id
+        		var catId = this.$route.query.id;
+        		let index = 0;
+        		for(var i=0;i<this.typeArea.length;i++){
+        			if(catId == this.typeArea[i].catId){
+        				index = i;
+        				break;
+        			}
+        		}
         		if(initial){
-        			var urls = that.$host+'/artist/list?cat='+catId+'&offset='+that.catOffset+'&limit='+that.catLimit+'&initial='+initial
+        			var urls = that.$host+'/artist/list?type='+this.typeArea[index].type+'&area='+this.typeArea[index].area+'&offset='+that.catOffset+'&limit='+that.catLimit+'&initial='+initial
         		}else{
-        			var urls = that.$host+'/artist/list?cat='+catId+'&offset='+that.catOffset+'&limit='+that.catLimit
+        			var urls = that.$host+'/artist/list?type='+this.typeArea[index].type+'&area='+this.typeArea[index].area+'&offset='+that.catOffset+'&limit='+that.catLimit
         		}
         		console.log(urls)
         		this.$http({
@@ -141,7 +149,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#artistCat{
 		text-align: left;
 		.g-mn2 {

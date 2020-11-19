@@ -28,6 +28,8 @@ import myRadio from '@/components/my/music/radio'
 import mv from '@/components/mv/mv'
 import video from '@/components/video/video'
 import friend from '@/components/friend/friend'
+import level from '@/components/user/level/level'
+import details from '@/components/user/level/details'
 Vue.use(Router)
 
 export default new Router({
@@ -103,6 +105,7 @@ export default new Router({
       path: '/program',
       name: 'progrm',
       component: Program,
+      alias: '/dj',
       meta:{title:'电台节目详情'}, 
     },
     {
@@ -209,6 +212,18 @@ export default new Router({
     	name:'friend',
     	component:friend,
     	meta:{title:'朋友'},
+    },
+    {
+      path:'/user/level',
+      name:'level',
+      component:level,
+      meta:{title:'网易云音乐'},
+    },
+    {
+      path:'/level/details',
+      name:'details',
+      component:details,
+      meta:{title:'网易云音乐'},
     },
   ]
 })

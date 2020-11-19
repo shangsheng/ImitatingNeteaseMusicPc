@@ -254,7 +254,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#user-record{
 		text-align: left;
 		

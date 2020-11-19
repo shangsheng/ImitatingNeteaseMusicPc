@@ -235,7 +235,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	.g-mn3 {
 	    height: 100%;
 	    float: right;

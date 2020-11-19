@@ -219,7 +219,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#song{
 		text-align: left;
 		.m-lycifo {

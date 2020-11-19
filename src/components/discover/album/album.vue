@@ -32,12 +32,13 @@
 							全部新碟
 						</span>
 					</h3>
-					<!--<div class="tab">
-						<router-link :to="{path:item.path,query:{area:item.area}}" class="s-fc3" v-for="(item,nums) of tabsFc" @click.native="pathQuery">{{item.name}} <span class="line" v-bind:hidden="nums == tabsFc.length-1">|</span></router-link>
-					</div>-->
+					<div class="tab">
+						<!-- <router-link :to="{path:item.path,query:{area:item.area}}" ></router-link> -->
+						<span class="s-fc3" v-for="(item,nums) of tabsFc" @click="areasQuery" :data-areas="item.area">{{item.name}} <span class="line" v-bind:hidden="nums == tabsFc.length-1">|</span></span>
+					</div>
 					
 				</div>
-				<ul class="m-cvrlst m-cvrlst-alb2 f-cb" v-if="allDiscShelves.length>0">
+				<ul class="m-cvrlst m-cvrlst-alb2 f-cb" v-if="allDiscShelves">
 					<li v-for="(item,index) in allDiscShelves" v-bind:key="index">
 						<div class="u-cover u-cover-alb2">
 							<img :src="item.picUrl"/>
@@ -86,8 +87,9 @@
         playlistLength:0,
         playlistMover:true,
         zSlt:'xdsj',
-        areas:'ZH',
-        barVoice:true
+        areas:'ALL',
+        barVoice:true,
+        totalLength:15//新碟的总个数
       }
     },
     components: {
@@ -157,7 +159,7 @@
 	         	url:that.$host+"/top/album/?offset="+offset+"&limit="+limit+"&area="+areas
 	         }).then(function(res){
 	         	console.log(res.data)
-	         	that.$.each(res.data.albums,function(index,item){
+	         	that.$.each(res.data.monthData,function(index,item){
 						
 					item.type = 19
 					let  artistName  = '';
@@ -171,8 +173,9 @@
 						}
 					})
 				})
-	         	that.allDiscShelves = res.data.albums
-	         	that.playlistLength = res.data.total
+	         	that.allDiscShelves = res.data.monthData
+	         	that.playlistLength = that.totalLength //res.data.total
+	         	that.playlistMover = res.data.hasMore
 	         }).catch(res=>{
 	         	console.log('请求失败：'+res.data+','+res.statusText);
 	         })
@@ -211,12 +214,26 @@
 		        }
 		        console.log(query)
 		        this.discHttp(this.offset,this.limit,this.areas)
+        	},
+        	//点击单页面更新
+        	areasQuery(e){
+        		const that = this;
+        		console.log(e.target.dataset.areas)
+        		that.areas = e.target.dataset.areas;
+        		let query = this.$router.history.current.query;
+		        let path = this.$router.history.current.path;
+		      //对象的拷贝
+		        let newQuery = JSON.parse(JSON.stringify(query));
+		      // 地址栏的参数值赋值
+		        newQuery.areas = that.areas;
+		        this.$router.push({ path, query: newQuery });
+		        this.discHttp(this.offset,this.limit,this.areas)
         	}
         }
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#discoverAlbum{
 		text-align: left;
 		.g-wrap {
@@ -300,6 +317,9 @@
 				.line {
 				    margin: 0 10px;
 				    color: #c7c7c7;
+				}
+				span.s-fc3{
+					cursor: pointer;
 				}
 			}
 			

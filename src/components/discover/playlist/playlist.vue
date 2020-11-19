@@ -186,7 +186,7 @@
 			         		el.playCount = that.$Playback(el.playCount)
 			         	})
 			         	that.playlist = res.data.playlists;
-			         	that.playlistLength = res.data.total;
+			         	that.playlistLength = Math.ceil(res.data.total/limit);
 			         	that.catXzfl = res.data.cat;
 			         }).catch(res=>{
 			         	console.log('请求失败：'+res);
@@ -234,7 +234,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	
 	.g-wrap {
 	    padding: 40px;

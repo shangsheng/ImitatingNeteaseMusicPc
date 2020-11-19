@@ -1,10 +1,10 @@
 <template>
 	<div id="plays" v-wechat-title="this.title">
 		<div class="g-btmbar" v-if="barVoice">
-			<div class="m-playbar m-playbar-lock" :class="['fixeds'?'m-playbar-lock':'m-playbar-unlock']" id="auto-id-tTDtnqRJsntkOJwF">
+			<div class="m-playbar " :class="[fixeds?'m-playbar-unlock':'m-playbar-lock']" id="auto-id-tTDtnqRJsntkOJwF" @mouseenter="palyBarAnimateOver" @mouseleave="palyBarAnimateOut">
 				<div class="updn">
 					<div class="left f-fl">
-						<span class="btn cursor" data-action="lock"></span>
+						<span class="btn cursor" data-action="lock" @click.stop="playBar"></span>
 					</div>
 					<div class="right f-fl"></div>
 				</div>
@@ -193,12 +193,25 @@
 						<div class="msk2"></div>
 						
 						<div class="msk2-listlyric">
+							
 							<happy-scroll color="rgba(134,134,134,0.8)" :min-length-v="0.2" size="6" :scroll-top="lyricPheight" smaller-move-v="start"  resize hide-horizontal ref="lyricScroll">
+								
 								<div class="listlyric j-flag" id="j-lyric">
-									<p class="j-flag " ref="lyricLine"  :class="{'z-sel': currentLineNum == index}" :data-time="item[0]"  v-for="(item,index) in lyric"  v-bind:hidden="item[0] == false" v-bind:key="index">{{item[1]}}<br>{{ item[2]? item[2]:''}}</p>
+									<div v-if="!lyricHidden">
+										<div v-if="lyricScrollHeidden">
+											<p class="j-flag " ref="lyricLine"  :class="{'z-sel': currentLineNum == index}" :data-time="item[0]"  v-for="(item,index) in lyric"  v-bind:hidden="item[0] == false" v-bind:key="index" >{{item[1]}} {{ item[2]? item[2]:''}}</p>
+										</div>
+
+										<div  v-else>
+											<p class="j-flag">*该歌词不支持自动滚动* </p>
+											<p class="j-flag css-white" v-text="lyric"></p>
+										</div>
+									</div>
+									
 									<!--<p class="j-flag " ref="lyricLines"  :class="{'z-sel': currentLineNum == index}" :data-time="item[0]"  v-for="(item,index) in tlyric"  v-bind:hidden="item.length == 1" v-if="tlyric.length != 0">{{item[1]}}</p>-->
 									<!--暂无歌词-->
-									<div class="nocnt nolyric" v-bind:hidden="!lyricHidden">
+									
+									<div class="nocnt nolyric" v-else>
 										<span class="s-fc4">{{songstracks[songsNum].name}},暂无歌词</span>
 									</div>
 								</div>
@@ -281,7 +294,7 @@
 					</div>
 					<div class="lsbtn f-tc">
 						<span class="u-btn2 u-btn2-2 u-btn2-2-h " data-action="ok"><i>立即订购</i></span>
-						<span class="u-btn2 u-btn2-1 u-btn2-1-h " data-action="cc"><i>以后再说</i></span>
+						<span class="u-btn2 u-btn2-1 u-btn2-1-h " data-action="cc" @click.stop="songsHidden"><i>以后再说</i></span>
 					</div>
 				</div>		
 			</div>
@@ -353,6 +366,7 @@
 		</div>
 		<div class="tjcg" v-bind:hidden="sccgHidden"><i class="u-icn2 u-icn21-100"></i>添加成功</div>
 		<div class="tjcg" v-bind:hidden="qxscHidden"><i class="u-icn2 u-icn21-100"></i>取消收藏成功</div>
+		<div class="tjcg" v-bind:hidden="yjscHidden"><i class="u-icn2 u-icn44-101"></i>已经收藏</div>
 		<div class="auto-1576560301925"  v-bind:hidden="scgdHidden"></div>
 		
 	</div>
@@ -427,6 +441,7 @@
 	        tlyric:[],//翻译
 	        //lyric2:[],//备份lyric
 	        lyricHidden:true,
+	        lyricScrollHeidden:true,
 	        currentLineNum:0,//播放的歌词
 	        lyricClass:false,
 	        lyricPheight:0,//歌词的高度
@@ -435,6 +450,7 @@
 	        barVoice:true,
 	        scgdHidden:true,
 	        sccgHidden:true,
+	        yjscHidden:true,
 	        userDataList:[],
 	        scSongId:null,
 	        scOption:{},
@@ -443,7 +459,8 @@
 	        tjgdmIf:true,
 	        playlistName:'',//添加歌单名
 	        errName:'歌单名不能为空',
-	        err:true
+	        err:true,
+	        
 	      }
     },
      beforeCreate: function () {
@@ -453,23 +470,28 @@
         },
         created: function () {
 //          debugger;
+
 			eventVue.$on('barVoice', (data) => {
 		        console.log(data)
 		        this.barVoice = data
 		      })
+			
 			var _this = this;
 			this.title = this.$route.meta.title
 			 // 用$on事件来接收参数
 			var songsList = null;
+			//判断是否第一次加载播放器
 	      this.$root.eventVue.$on('playid', (data) => {
+
 	      console.log(data)
-	      	songsList = JSON.parse(_this.$localUtil('songsList'))
+	      console.log(_this.$localUtil('songsList')!='undefined')
+	      	songsList = _this.$localUtil('songsList')!='undefined'? JSON.parse(_this.$localUtil('songsList')):null;
 	      	console.log(songsList)
 	        if(data.resData&&data.resData == songsList.id){
 	        	
 	        	if(!data.resFrom){
-	        		//榜单请求歌曲和列表从第几个播放
-	        		_this.getHttp('/top/list?idx='+data.resIdx,function(res){
+	        		//榜单请求歌曲和列表从第几个播放(榜单也是歌单的一种)
+	        		_this.getHttp('/playlist/detail?id='+data.resIdx,function(res){
 	        			
 	        			res.playlist.num = 3;
 						_this.songsList = res.playlist;
@@ -510,6 +532,14 @@
 	        			
 	        				
 	        		}else if(data.resType == '19'){
+	        			if(data.resData == _this.songsList.id){
+	        				_this.songsNum = data.songsNum
+	        			}else{
+	        				_this.songstracks.push(data.resProgram);
+	        			}
+	        				
+	        			_this.songsHttp(data.resId,0);
+	        		}else if(data.resType == '13'){
 	        			if(data.resData == _this.songsList.id){
 	        				_this.songsNum = data.songsNum
 	        			}else{
@@ -619,7 +649,7 @@
 	        			
 			        		if(data.resIdx){
 			        			//榜单请求和列表，全部播放(还需要一个榜单参数)
-				        		_this.getHttp('/top/list?idx='+data.resIdx,function(res){
+				        		_this.getHttp('/playlist/detail?id='+data.resIdx,function(res){
 				        			
 				        			res.playlist.num = 3;
 									_this.songsList = res.playlist;
@@ -967,17 +997,17 @@
 			
 			if(this.$localUtil("songstracks") != null){
 				
-				this.songstracks = JSON.parse(this.$localUtil("songstracks"))
+				this.songstracks = this.$localUtil("songstracks")!='undefined'? JSON.parse(this.$localUtil("songstracks")):null
 				
 				this.lengthTracks = this.songstracks.length;
 			}
 			if(this.$localUtil("songsData") != null){
-				this.songsData = JSON.parse(this.$localUtil("songsData"))
+				this.songsData = this.$localUtil("songsData")!='undefined'? JSON.parse(this.$localUtil("songsData")):null
 				this.songsNum = Number(this.songsData.songsNum)
 				this.lyricGet(this.songsData.id)
 			}
 			if(this.$localUtil("songsList") != null){
-				this.songsList = JSON.parse(this.$localUtil("songsList"))
+				this.songsList = this.$localUtil("songsList")!='undefined'? JSON.parse(this.$localUtil("songsList")):null
 				
 			}
         },
@@ -1017,7 +1047,13 @@
 	        		_this.$set(_this.$data,'qxscHidden',true)
 	        	},3000)
         	})
-        	
+        	this.$root.eventVue.$on('yjscHidden',function(val){
+        		_this.yjscHidden = val
+        		setTimeout(function(){
+	        		_this.$set(_this.$data,'yjscHidden',true)
+	        	},3000)
+        	})
+        	this.playBar();
         },
         
         deactivated: function(){
@@ -1028,7 +1064,7 @@
         },
         beforeUpdate:function(){
         	console.log('=即将更新渲染=');
-        	console.log(this.audio)
+        	// console.log(this.audio)
         	this.audio.readyState = this.$refs.audio.readyState
         },
         updated:function(){
@@ -1097,7 +1133,10 @@
 								this.$refs.audio.volume = this.audio.volume;
 								this.pasPlay = true
 								if(!this.lyricHidden){
-									this.gundong()
+									if(this.lyricScrollHeidden){
+										this.gundong()
+									}
+									
 								}
 								this.title = this.songstracks[this.songsNum].name
 								
@@ -1118,6 +1157,7 @@
 		         	method:'get',
 		         	url:that.$host+'/song/url?id='+ id
 		         }).then(function(res){
+		         	console.log(res)
 		         	if(res.data.data[0].url){
 		         		that.$.each(res.data.data,function(index,item){
 		         			if(that.songslx[num]){
@@ -1238,12 +1278,13 @@
 		        if(this.songsNum>=this.songstracks.length-1){
 						this.songsNum = 0
 					}else{
-						this.songsNum = this.songsNum +1
+						this.songsNum = Number(this.songsNum) +1
 					}
 					
 					if(this.tipSj){
 						_this.songsNum = Math.round(Math.random()*_this.lengthTracks,10)
 					}
+					
 					this.songsHttp(this.songstracks[this.songsNum].id,this.songsList.num)
 		      }
 		      
@@ -1496,27 +1537,36 @@
 		         	method:'get',
 		         	url:that.$host+'/lyric?id='+ id
 		         }).then(function(res){
-		         	
+		         	console.log(res)
 		         	if(res.data.lrc){
 		         		if(res.data.lrc.lyric !== ''){
-		         			arrLyric = res.data.lrc.lyric.split('[');
-				         	
-				         	if(res.data.tlyric.lyric){
+		         			console.log(res.data.lrc.lyric.indexOf('['))
+				         	if(res.data.lrc.lyric.indexOf('[')===-1){
+
+								that.lyric = res.data.lrc.lyric
+								that.lyricScrollHeidden = false;
+								console.log(that.lyric)
+				         	}else{
+				         		arrLyric = res.data.lrc.lyric.split('[');
+				         		if(res.data.tlyric.lyric){
 				         		
-				         		that.$.each(res.data.tlyric.lyric.split('['),function(index,item){
-				         			var tarrItem = item.split(']')
-				         			
-				         			that.tlyric.push(tarrItem[1])
-				         			
-				         		})
+					         		that.$.each(res.data.tlyric.lyric.split('['),function(index,item){
+					         			var tarrItem = item.split(']')
+					         			
+					         			that.tlyric.push(tarrItem[1])
+					         			
+					         		})
+					         	}
+					         	that.$.each(arrLyric,function(index,item){
+					         		
+					         		var arrItem = item.split(']')
+					         		arrItem[0] = that.$secondTime(arrItem[0])
+					         		arrItem.push(that.tlyric[index])
+					         		that.lyric.push(arrItem)
+					         	})
+					         	that.lyricScrollHeidden = true;
 				         	}
-				         	that.$.each(arrLyric,function(index,item){
-				         		
-				         		var arrItem = item.split(']')
-				         		arrItem[0] = that.$secondTime(arrItem[0])
-				         		arrItem.push(that.tlyric[index])
-				         		that.lyric.push(arrItem)
-				         	})
+				         	
 				         	
 				         	//that.lyric2 = that.lyric
 				         	that.lyricHidden = false;
@@ -1634,7 +1684,7 @@
 					}else{
 						this.$logoRefresh(function(res){
 						
-							that.loginData =  JSON.parse(that.$localUtil("logoData"));
+							that.loginData = that.$localUtil("logoData")!='undefined'? JSON.parse(that.$localUtil("logoData")):null;
 							that.loginBs = false;
 							console.log(that.loginData)
 							let resData = res;
@@ -1736,13 +1786,43 @@
 		  creategb(){
 		  	this.tjgdmIf = true;
 		  	this.$set(this.$data,'scgdHidden',true);
+		  	this.$toggleBody(0);
+		  },
+		  //播放条是否隐藏
+		  playBar(e){
+
+		  	let playBarBoolen = this.$toboolean(this.$localUtil('playBarBoolen')!='undefined'?this.$localUtil('playBarBoolen'):this.fixeds);
+		  	if(e!=undefined){
+				if(playBarBoolen != null){
+					console.log(!playBarBoolen)
+			  		this.$set(this.$data,'fixeds',!playBarBoolen);
+					this.$setLocalStorage('playBarBoolen',!playBarBoolen);
+				}else{
+					this.$set(this.$data,'fixeds',!this.fixeds);
+					this.$setLocalStorage('playBarBoolen',!this.fixeds);
+				}
+		  	}else{
+		  		this.$set(this.$data,'fixeds',playBarBoolen)
+		  		if(this.fixeds) this.$('#auto-id-tTDtnqRJsntkOJwF').animate({top:"-7px"})
+		  	}
+		  
+		  },
+		  //是否隐藏动画(移入)
+		  palyBarAnimateOver(){
+		  	
+		  	if(this.fixeds) this.$('#auto-id-tTDtnqRJsntkOJwF').animate({top:"-53px"})
+		  },
+		  //移出
+		  palyBarAnimateOut(e){
+		  	if(this.fixeds) this.$('#auto-id-tTDtnqRJsntkOJwF').animate({top:"-7px"})
+			
 		  }
         },
         
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	.m-pbar .btn, .m-vol .btn {
 	    background: url(../../assets/iconall.png) no-repeat;
 	    _background: url(../../assets/iconall.png);
@@ -2433,6 +2513,7 @@
 			    -moz-transition: color 0.7s linear;
 			    -o-transition: color 0.7s linear;
 			    transition: color 0.7s linear;
+			    
 			}
 			p.z-sel {
 			    color: #fff;
@@ -2441,6 +2522,9 @@
 			    -moz-transition: color 0.7s linear;
 			    -o-transition: color 0.7s linear;
 			    transition: color 0.7s linear;
+			}
+			p.css-white{
+				white-space: pre-wrap;
 			}
 		}
 		
@@ -2543,7 +2627,7 @@ div.m-layer .lybtn span, div.m-layer .lsbtn span {
 .u-btn2-2-h i,.u-btn2-1-h i {
 	width: 83px;
 }
-.u-btn2-2-h:hover{
+.u-btn2-2-h,.u-btn2-2-h:hover{
 	background-position: right -1770px;
 }
 .u-btn2-2-h:hover i {
@@ -2642,6 +2726,12 @@ div.m-layer .lyct-1 {
 		width:14px;
     	height: 14px;
     	background-position: 0 -380px;
+    	margin-right: 10px;
+	}
+	.u-icn44-101{
+		width:14px;
+    	height: 14px;
+    	background-position: -20px -380px;
     	margin-right: 10px;
 	}
 	background-color:#fff;

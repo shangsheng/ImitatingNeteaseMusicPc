@@ -144,7 +144,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-user{
 		text-align: left;
 		.n-srchrst {

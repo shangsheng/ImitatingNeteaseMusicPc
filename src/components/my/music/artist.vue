@@ -147,7 +147,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#musicArtist{
 		text-align: left;
 		.g-mn3 {

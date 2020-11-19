@@ -133,7 +133,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-album{
 		text-align: left;
 		.n-srchrst {

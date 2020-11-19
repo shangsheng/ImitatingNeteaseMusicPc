@@ -224,7 +224,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-lyric{
 		text-align: left;
 		.n-srchrst {

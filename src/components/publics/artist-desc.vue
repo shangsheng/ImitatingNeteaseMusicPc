@@ -70,7 +70,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#artistDesc{
 		.n-artdesc {
 		    margin-top: 30px;

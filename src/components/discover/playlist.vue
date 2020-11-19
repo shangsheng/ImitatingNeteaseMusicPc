@@ -161,6 +161,7 @@
          barVoice:true
       }
     },
+    inject:['reload'],
      beforeCreate: function () {
 //          debugger;
         },
@@ -274,11 +275,23 @@
         			this.zShow = true
         		}
         	}
+        },
+        watch: {
+            '$route' (to, from) {
+
+                console.log(to)
+                console.log(from)
+                //监听id是否发生变化
+                if(this.$route.query.id){
+                    this.reload()
+                }
+
+            }
         }
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.u-cover-dj {
 	    width: 200px;
 	    height: 200px;

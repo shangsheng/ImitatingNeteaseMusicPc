@@ -264,8 +264,9 @@
 			  		if(data == 200){
 			  			that.$root.eventVue.$emit('qxscHidden',false);
 			  			console.log($event)
-			  			let resIndex = $event.currentTarget.getAttribute('data-res-index')
-	        			if($event.currentTarget.getAttribute('data-res-name') == 'createdPlaylistCount'){
+			  			let resIndex = $event.currentTarget?$event.currentTarget.getAttribute('data-res-index'):$event.path[0].dataset.resIndex;
+			  			let resName = $event.currentTarget?$event.currentTarget.getAttribute('data-res-name'):$event.path[0].dataset.resName;
+	        			if(resName == 'createdPlaylistCount'){
 	        				that.subcount[3].cHeaderData.splice(resIndex,1)
 	        			}else{
 	        				that.subcount[4].cHeaderData.splice(resIndex,1)
@@ -312,7 +313,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#my{
 		text-align: left;
 		.n-pglg {
@@ -510,4 +511,7 @@
 	.scgd{
 		text-align: center;
 	}
+	.lybtn{
+			margin-top: 30px
+		}
 </style>

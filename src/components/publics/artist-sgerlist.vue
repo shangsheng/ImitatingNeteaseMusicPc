@@ -120,7 +120,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#artistSgerlist{
 		text-align: left;
 		.m-cvrlst {

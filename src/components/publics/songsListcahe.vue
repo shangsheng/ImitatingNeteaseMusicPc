@@ -27,12 +27,14 @@
 							</tr>
 						</thead>
 						<tbody>
+							<!-- 版权'js-dis':item.copyright===1 -->
 							<tr :class="{even:index%2==0}" v-for="(item,index) in songsP" >
 								<td class="left">
 									<div class="hd ">
 										
 										<span class="ply " :class="{'ply-z-slt':songsNum == index}" data-res-action="play" :data-res-type="songsPreCahe.types" :data-res-from="songsPreCahe.froms" :data-res-id="item.id" :data-res-data="songsPreCahe.id" title="播放" @click.stop="plays($event)" :data-res-index="index" v-if="songsPreCahe.category != '排行榜'">&nbsp;</span>
-										<span class="ply " :class="{'ply-z-slt':songsData.id == item.id}" data-res-action="play" :data-res-type="songsPreCahe.types" :data-res-from="songsPreCahe.froms" :data-res-id="item.id" :data-res-data="songsPreCahe.id" title="播放" @click.stop="plays($event)" :data-res-index="index" v-else>&nbsp;</span>
+										<!-- 排行榜当前播放的音乐songsData.id == item.id|| -->
+										<span class="ply " :class="{'ply-z-slt':songsNum == index}" data-res-action="play" :data-res-type="songsPreCahe.types" :data-res-from="songsPreCahe.froms" :data-res-id="item.id" :data-res-data="songsPreCahe.id" title="播放" @click.stop="plays($event)" :data-res-index="index" v-else>&nbsp;</span>
 										<span class="num">{{index+1}}</span>
 										<!--<div class="rk" v-bind:hidden="!songsPreCahe.tracks&&songsPreCahe.category != '排行榜'||songsPreCahe.category == '歌单'">
 											<span class="ico ico u-icn u-icn-73 s-fc9" :class="[]"></span>
@@ -56,7 +58,7 @@
 													<span class="s-fc8" :title="item.alia" v-if="item.alia.lenth != 0" v-for="obj of item.alia">
 														-{{obj}}
 													</span>
-													<span class="mv" v-if="item.mv" :data-res-id="item.mv" data-res-action="mv" title="播放mv">mv</span>
+													<span class="mv" v-if="item.mv" :data-res-id="item.mv" data-res-action="mv" title="播放mv" @click.stop="clickMv">mv</span>
 												</span>
 											</div>
 										</div>
@@ -66,7 +68,7 @@
 									<span class="u-dur ">{{item.dt}}</span>
 									<div class="opt hshow">
 										<span class="u-icn u-icn-81 icn-add"  data-res-action="addto" :data-res-type="songsPreCahe.types" :data-res-from="songsPreCahe.froms" :data-res-id="item.id" :data-res-data="songsPreCahe.id" title="添加到播放列表"></span>
-										<span class="icn icn-fav" :data-res-id="item.id" data-res-action="fav" :data-res-type="songsPreCahe.types" title="收藏"></span>
+										<span class="icn icn-fav" :data-res-id="item.id" data-res-action="fav" :data-res-type="songsPreCahe.types" title="收藏" @click.stop="collectSongs"></span>
 										<span class="icn icn-share" :data-res-id="item.id" data-rs-action="share" :data-res-type="songsPreCahe.types" :data-res-name="item.name" :data-res-author="item.arLength" data-res-pic="item.al.picUrl" title="分享"></span>
 										<span class="icn icn-dl" :data-res-id="item.id" data-res-action="download" :data-res-type="songsPreCahe.types" title="下载">下载</span>
 									</div>
@@ -223,7 +225,7 @@
 				
 				
 				
-				if(_this.songsPreCahe.category == '排行榜'){
+				/*if(_this.songsPreCahe.category == '排行榜'){
 					var songsData = JSON.parse(_this.$localUtil('songsData'))
 					console.log(songsData)
 					_this.$.each(_this.songsPreCahe.tracks,function(index,item){
@@ -232,6 +234,15 @@
 					
 								_this.songsData = songsData
 								
+						}else{
+							_this.$root.eventVue.$on('songsNum',(data)=>{
+								songsList = JSON.parse(_this.$localUtil('songsList'))
+								console.log(_this.songsPreCahe.id == songsList.id)
+								if(_this.songsPreCahe.id == songsList.id){
+									_this.songsNum = data
+								}
+							
+							})
 						}
 						
 						//当期播放音乐的id
@@ -258,17 +269,50 @@
 						}
 						
 					})
-				}
+					
+				}*/
 						
+				var songsList = JSON.parse(_this.$localUtil('songsList'))
+					if(songsList && _this.songsPreCahe.id == songsList.id){
+					
+							_this.songsNum = JSON.parse(_this.$localUtil('songsNum'))
+							
+					}
+					this.$root.eventVue.$on('songsNum',(data)=>{
+						songsList = JSON.parse(_this.$localUtil('songsList'))
+						console.log(this.songsPreCahe.id == songsList.id)
+						if(this.songsPreCahe.id == songsList.id){
+							_this.songsNum = data
+						}
+						
+					})
 				
 				
-				
+        	},
+        	//跳转到mv页面
+        	clickMv(e){
+        		console.log(e)
+        		if(e.target.dataset.resAction==='mv'){
+        			this.$router.push({name:'mv',query:{id:e.target.dataset.resId}})
+        		}
+        	},
+        	//收藏歌曲
+        	collectSongs($event){
+        		console.log($event)
+        		 var that =this;
+	         if(this.$cookieUtil("email")){
+	         	
+	         }else{
+	         	this.$root.eventVue.$emit('classify','l')
+			    this.$toggleBody(1)
+			    this.$drage('auto-id-e0uH7BGEq0gyq7zi')
+	         }
         	}
         }
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	table {
 	    border-collapse: collapse;
 	    border-spacing: 0;
@@ -346,6 +390,24 @@
 		    height: 17px;
 		    cursor: pointer;
 		    background-position: 0 -103px;
+		}
+		.ply:hover {
+		    background-position: 0 -128px;
+		}
+		 .js-dis .ply,  .js-dis .ply:hover {
+		    opacity: 0.5;
+		    filter: Alpha(opacity=50);
+		    background-position: 0 -103px;
+		    cursor: default;
+		}
+		 .js-dis * {
+		    color: #bbb;
+		}
+		 .js-dis .icn-add,  .js-dis .icn-fav,  .js-dis .icn-share,  .js-dis .u-icn-81,  .js-dis .icn-dl {
+		    display: none;
+		}
+		 .js-dis.z-hover .u-dur,  .js-dis:hover .u-dur {
+		    display: block;
 		}
 		.tt {
 		    float: left;

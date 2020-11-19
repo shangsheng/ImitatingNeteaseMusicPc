@@ -74,6 +74,14 @@
 					<m-playlist v-bind:mPlaylist="mPlaylistData" v-else-if="num == 5 " :key="mPlaylistKey"></m-playlist>
 					<m-rdilist v-bind:mRdilist="mRdilistData" v-else-if="num == 6 " :key="mRdilistKey"></m-rdilist>
 					<m-user v-bind:mUser="mUserData" v-else-if="num == 7 " :key="mUserKey"></m-user>
+					<div class="ztag j-flag" v-if="searchDatas.Count==0">
+						<div class="n-nmusic">
+							<h3 class="f-ff2">
+								<i class="u-icn u-icn-21 icon-img"></i>
+								很抱歉，未能找到相关搜索结果！
+							</h3>
+						</div>
+					</div>
 					<div class="ztag j-flag auto-1573694747127-parent">
 						<pager v-bind:pageMovers="mSearchMover" v-bind:pageLength="mSearchLength" v-bind:limit="tabsSrch[0].limit" v-if="mSearchLength > 1" v-on:listenToChild="mSongsChild" :key="mSearchKey"></pager>
 					</div>
@@ -418,7 +426,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#m-search{
 		text-align: left;
 		.g-wrap {
@@ -491,6 +499,20 @@
 		.n-srch .pgsrch .u-lstlay {
 		    top: 43px;
 		    width: 418px;
+		}
+		.n-nmusic{
+			padding: 105px 0 105px 0;
+    		text-align: center;
+    		 h3 {
+			    padding-bottom: 38px;
+			    font-size: 18px;
+			    color: #333;
+			    font-weight: bold;
+			}
+			 .u-icn-21 {
+			    margin-right: 17px;
+
+			}
 		}
 	}
 </style>

@@ -1,7 +1,15 @@
 <template>
 	<div id="user-home" >
 		<div class="g-bd" v-wechat-title="this.title">
-			<div class="g-wrap p-prf" v-if="userDetail">
+			<div class="g-bd g-bd-full" v-if="!userDetail">
+				<div class="n-pglg">
+					<div class="pic">
+						<h2>登录网易云音乐</h2>
+						<span class="btn cursor" data-idName="l" @click.stop="logShow($event)">立即登录</span>
+					</div>
+				</div>
+			</div>
+			<div class="g-wrap p-prf" v-else>
 				<dl class="m-proifo f-cb">
 					<dt class="f-pr">
 						<img :src="userDetail.profile.avatarUrl"/>
@@ -127,41 +135,61 @@
   inject:['reload'],//app.vueҳ���ж����¼���
    beforeCreate: function () {
 //          debugger;
+			//判断是否登陆
+
         },
         created: function () {
 //          debugger;
 		let that = this;
 		let id =  this.$route.query.id;
-		this.$http({
-	        method:'get',
-	        url:that.$host +'/user/detail?uid='+id
-	    }).then(function(resp){                            
-	        console.log(resp.data);
-	        that.$.ajax({
-	        	method:'get',
-	        	url:'https://restapi.amap.com/v3/config/district',
-	        	data:{
-	        			keywords:resp.data.profile.city,
-	        			subdistrict:0,
-	        			key:'7887f8898bfdbc49ff7805c05583719e'
-	        	},
-	        	async: false,
-	        	success:function(res){
-	       			console.log(res)
-	   				resp.data.profile.cityDistricts = res.districts
-    			},
-	   			error:function(res){
-	        		console.log(res)
-	   			}
-	        })
-	        resp.data.profile.avatarUrl = resp.data.profile.avatarUrl+"?param=180y180";
-	        that.title = resp.data.profile.nickname+'-用户'+'-我的云音乐';
-	      
-	       that.userDetail = resp.data
-	     
-	    }).catch(resp => {
-	        console.log('请求失败：'+resp.status+','+resp.statusText);
-	    });
+		
+
+if(this.$cookieUtil("email")){
+					this.$logoRefresh(function(ress){
+						console.log(ress)
+						
+						that.loginBs = false;
+						that.$http({
+				         	method:'get',
+				         	url:that.$host+"/user/subcount"
+				         }).then(function(res){
+				         	console.log(res.data)
+				         	that.$http({
+						        method:'get',
+						        url:that.$host +'/user/detail?uid='+id
+						    }).then(function(resp){                            
+						        console.log(resp.data);
+						        that.$.ajax({
+						        	method:'get',
+						        	url:'https://restapi.amap.com/v3/config/district',
+						        	data:{
+						        			keywords:resp.data.profile.city,
+						        			subdistrict:0,
+						        			key:'7887f8898bfdbc49ff7805c05583719e'
+						        	},
+						        	async: false,
+						        	success:function(res){
+						       			console.log(res)
+						   				resp.data.profile.cityDistricts = res.districts
+					    			},
+						   			error:function(res){
+						        		console.log(res)
+						   			}
+						        })
+						        resp.data.profile.avatarUrl = resp.data.profile.avatarUrl+"?param=180y180";
+						        that.title = resp.data.profile.nickname+'-用户'+'-我的云音乐';
+						      
+						       that.userDetail = resp.data
+						     
+						    }).catch(resp => {
+						        console.log('请求失败：'+resp.status+','+resp.statusText);
+						    });
+				         }).catch(res=>{
+				         	console.log('请求失败：'+res.data+','+res.statusText);
+				         })
+				        
+					})
+}
 		 this.$root.eventVue.$emit('navBul',this.navBul)
 		 this.$root.eventVue.$emit('mNavfst',this.mNavfst)
 		 this.$root.eventVue.$emit('barVoice',this.barVoice)
@@ -230,7 +258,15 @@
 			    }).catch(resp => {
 			        console.log('请求失败：'+resp.status+','+resp.statusText);
 			    });
-        	}
+        	},
+        	//登录显示
+        	logShow($event){
+        		var dataIdName = $event.target.getAttribute('data-idName');
+        		console.log(dataIdName)
+        		this.$root.eventVue.$emit('classify',dataIdName)
+        		this.$toggleBody(1)
+        		this.$drage('auto-id-e0uH7BGEq0gyq7zi')
+        	},
         },
          //����
         watch: {
@@ -248,7 +284,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#user-home{
 		text-align: left;
 		.g-wrap {
@@ -503,5 +539,25 @@
 		    float: left;
 		    margin-left: 10px;
 		}
+		 .n-pglg {
+		    width: 807px;
+		    height: 268px;
+		    margin: 0 auto 0;
+		    padding-top: 104px;
+		    background-position: 0 104px;
+		    h2 {
+			    height: 100px;
+			    text-indent: -9999px;
+			}
+			.btn {
+			    display: block;
+			    width: 167px;
+			    height: 45px;
+			    margin: 102px 0 0 482px;
+			    background-position: 0 9999px;
+			    text-indent: -9999px;
+			}
+		}
+
 	}
 </style>

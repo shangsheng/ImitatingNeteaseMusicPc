@@ -109,7 +109,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-rdilist{
 		text-align: left;
 		.head2 {

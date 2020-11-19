@@ -187,7 +187,7 @@
 		    										</router-link>
 		    										<div class="btn">
 		    											<span class="s-bg s-bg-9 f-tdn cursor" hidefocus="true"  :data-res-id="item.playlist.id" data-res-from="31" data-res-action="play" :data-res-type="item.playlist.type" :data-res-idx ="item.playlist.idx" @click.stop="playSong($event)" title="播放"></span>
-		    											<span class="s-bg s-bg-10 f-tdn cursor subscribe-flag " hidefocus="true" :data-plid="item.playlist.id" title="收藏"></span>
+		    											<span class="s-bg  f-tdn cursor subscribe-flag " :class="[item.faDis?'s-bg-10-slt':'s-bg-10']" hidefocus="true" :data-plid="item.playlist.id" title="收藏"  @click.stop="scColick($event)" :data-index="index"></span>
 		    										</div>
 		    									</div>
 		    								</dt>
@@ -306,7 +306,7 @@
 	    	let _this = this
 	      return {
 	      	zSlt:'tj',
-	      	topList:[0,3,2],
+	      	topList:[19723756,3779629,2884035],
 	      	homeLists:[],
 	      	hotTj:[],
 	      	hotZb:[],
@@ -318,8 +318,8 @@
 	        				{targetType: 10,path:'/album'},
 	        				{targetType: 1000,path:'/playlist'},
 	        				{targetType: 1005,path:'/topic'},
-	        				{targetType: 1001,path:'/dj'}
-	        				
+	        				{targetType: 1001,path:'/dj'},
+	        				{targetType: 1009,path:'/djradio'}
 	        			],
 	        catList:[
 		    		 {cat:'华语',path:'/discover/playlist/'},
@@ -402,7 +402,9 @@
           	dayweb:'-',
           	resource:[],
           	barVoice:true,
-          	title:"我的云音乐"
+          	title:"我的云音乐",
+          	faDis:false,
+        	logH:false
 		}
     },
     inject:['reload'],
@@ -425,6 +427,7 @@
 				         }).then(function(res){
 				         	console.log(res.data)
 				         	that.loginData = res.data
+				         	that.logH = true
 				         }).catch(res=>{
 				         	console.log('请求失败：'+res.data+','+res.statusText);
 				         })
@@ -434,7 +437,11 @@
 			         	url:that.$host+"/recommend/resource"
 			         }).then(function(res){
 			         	console.log(res.data)
-			         	that.resource = res.data.recommend.slice(0,3)
+			         	const recommend = res.data.recommend.slice(0,3);
+			         	that.$.each(recommend,function(index,el){
+			         		el.playcount = that.$Playback(el.playcount);
+			         	})
+			         	that.resource = recommend;
 			         	
 			         }).catch(error=>{
 			         	console.log(error)
@@ -449,7 +456,7 @@
 			        				type:1
 			        			},
 			        			xhrFields: {
-					                withCredentials: true // 这里设置了withCredentials
+					                withCredentials: true // 这里设置了withCredentials 
 					           },
 			        			error:function(resp){
 			        			
@@ -503,14 +510,15 @@
 	         this.$.each(this.topList,function(index,item){
 	         	that.$http({
 		         	method:'get',
-		         	url:that.$host+"/top/list?idx="+item
+		         	url:that.$host+"/top/list?id="+item
 		         }).then(function(res){
 		         	console.log(res.data)
-		         	res.data.playlist.type = 13
-		         	res.data.playlist.idx = item
+		         	res.data.playlist.type = 13;
+		         	res.data.playlist.idx = item;
+		         	res.data.faDis = false;
 					that.$.each(res.data.playlist.tracks,function(index,item){
 						
-						item.type = 18
+						item.type = 18;
 					})
 					res.data.playlist.tracks = res.data.playlist.tracks.slice(0,10);
 		         	that.homeLists.push(res.data)
@@ -585,7 +593,7 @@
 			
 			
 			      }
-			   this.dayweb = days;
+			   this.dayweb = days; 
 			 
         },
         beforeMount: function () {
@@ -599,7 +607,7 @@
 			//banner
 			this.$http({
 	        	method:'get',
-	        	url:'http://192.168.1.74:3000/banner?type=0',
+	        	url:'http://localhost:3000/banner?type=0',
 	        }).then(function(resp){                            
 		        console.log(resp.data);
 		        that.banners = resp.data.banners
@@ -690,7 +698,7 @@
         		var _this = this;
         		this.$http({
 	        			method:'get',
-	        			url:'http://192.168.1.74:3000/logout'
+	        			url:'http://localhost:3000/logout'
 	        		}).then(function(resp){                            
 	        			console.log(resp.data);
 	        			_this.$removeLocalStorage('logoData');
@@ -717,6 +725,7 @@
 	        			xhrFields: {
 			                withCredentials: true // 这里设置了withCredentials
 			            },
+			            
 	        			success:function(resp){
 	        				console.log(resp)
 	        				if(resp.code == 200 ){
@@ -756,7 +765,34 @@
 			   else
 			       return false;
 			},
-        	
+        	 //点击收藏
+	       scColick($event){
+	       	console.log($event)
+	        		if(this.logH){
+	        			// this.$root.eventVue.$emit('yjscHidden',false);
+	        			var that = this;
+	        			let num = $event.currentTarget.getAttribute('data-index');
+	        			var cades = this.$collection(this,{
+					  		resAction:'fav',
+					  		actionT:1
+					  	},$event,0,function(data){
+	        				if(data == 200 ){
+		        				that.$root.eventVue.$emit('sccgHidden',false);
+		        				// that.faDis=true;
+		        				that.homeLists[num].faDis=true;
+		        			}
+	        			})
+	        			
+	        			
+	        		}else{
+	        			
+		        		this.$root.eventVue.$emit('classify','l')
+		        		this.$toggleBody(1)
+		        		this.$drage('auto-id-e0uH7BGEq0gyq7zi')
+	        		}
+	        		
+	        		
+	        	}
         },
         updated:function(){
         	var that = this;
@@ -770,12 +806,13 @@
 	      	 	//that.$refs.mySwiperDisc.swiper.slideTo(5, 1000, false)
 //	      	 })
        },
+      
        
   }
 </script>
 
-<style lang="less">
-	/*@import '../../../static/css/public.less';*/
+<style lang="less" scoped>
+	/* @import '../../../static/css/public.less';*/
 	.s-bg, .v-hd2, .n-disk li,.n-news-li {
 	    background: url('../../assets/index.png') no-repeat 0 9999px;
 	}
@@ -1350,6 +1387,11 @@
 	}
 	.s-bg-5 {
 	    background-position: 0 -270px;
+	}
+	.s-bg-10-slt, .s-bg-10-slt:hover {
+	    background-position: -330px -235px;
+	    cursor: default;
+	    pointer-events: none;
 	}
 	.n-myinfos {
 		 .info {

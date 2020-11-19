@@ -157,7 +157,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#musicMv{
 		text-align: left;
 		.g-mn3 {

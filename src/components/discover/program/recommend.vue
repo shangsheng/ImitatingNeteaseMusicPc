@@ -109,7 +109,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#recommend{
 		text-align: left;
 		.g-wrap {

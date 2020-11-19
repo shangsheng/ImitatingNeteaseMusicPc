@@ -278,7 +278,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#artist{
 		text-align: left;
 		.g-bd4{

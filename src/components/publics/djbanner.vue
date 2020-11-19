@@ -132,7 +132,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	.m-radio {
 		.rditype {
 		    margin-bottom: 20px;

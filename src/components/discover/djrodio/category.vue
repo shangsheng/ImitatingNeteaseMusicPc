@@ -203,7 +203,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 #discoverCategory{
 	text-align: left;
 	.g-wrap {

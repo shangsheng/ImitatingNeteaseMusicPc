@@ -10,13 +10,15 @@ let collection = (that,dataOpton,$event,scSongId,callbak)=>{
 //收藏 MV/mv/sub?t=1&mvid=
 //收藏的 MV 列表 /mv/sublist
 //收藏/取消收藏专辑/album/sub?t=1&id=
-	console.log($event)
+	console.log($event.currentTarget)
 	var pids = 0;
 	if(typeof $event != 'number'){
 		if(!$event.currentTarget.getAttribute('data-id')){
 		  
 			  if($event.currentTarget.getAttribute('data-id') ==0){
 			  	pids = $event.currentTarget.getAttribute('data-id')
+			  }else if(!$event.currentTarget.getAttribute('data-res-id')){
+			  	pids = $event.currentTarget.getAttribute('data-plid')
 			  }else{
 			  	pids = $event.currentTarget.getAttribute('data-res-id')
 			  }
@@ -113,7 +115,7 @@ let collection = (that,dataOpton,$event,scSongId,callbak)=>{
 						})
 					
 					}
-				}else{
+				}else if(scSongId!=0){
 					that.$http({
 					method:'get',
 					url:that.$host + "/playlist/tracks?op="+dataOpton.actionT+"&pid="+pids+"&tracks="+scSongId,
@@ -129,6 +131,21 @@ let collection = (that,dataOpton,$event,scSongId,callbak)=>{
 					}).catch(res=>{
 						console.log(res);
 					
+					})
+				}else{
+					//收藏歌单
+					console.log(pids)
+					that.$http({
+						method:'get',
+						url:that.$host + "/playlist/subscribe?t="+dataOpton.actionT+"&id="+pids,
+					}).then(function(res){
+						console.log(res.data)
+							 
+						callbak(res.data.code)
+					}).catch(res=>{
+						that.$root.eventVue.$emit('yjscHidden',false);
+						console.log(res);
+						
 					})
 				}
 			}

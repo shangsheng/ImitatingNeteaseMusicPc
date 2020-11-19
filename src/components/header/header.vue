@@ -371,7 +371,7 @@
         		if(this.values != ''){
         			this.$http({
 	        			method:'get',
-	        			url:'http://192.168.1.74:3000/search/suggest?keywords='+this.values
+	        			url:'http://192.168.1.115:3000/search/suggest?keywords='+this.values
 	        		}).then(function(resp){                            
 	        			console.log(resp.data);
 	        			that.serachdata = resp.data.result;
@@ -395,7 +395,7 @@
         		var _this = this;
         		this.$http({
 	        			method:'get',
-	        			url:'http://192.168.1.74:3000/logout'
+	        			url:'http://192.168.1.115:3000/logout'
 	        		}).then(function(resp){                            
 	        			console.log(resp.data);
 	        			_this.$removeLocalStorage('logoData');
@@ -437,7 +437,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" scoped>
 	@import '../../../static/css/public.less';
 	
 	.m-top{

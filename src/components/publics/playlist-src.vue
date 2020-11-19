@@ -262,7 +262,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#playlist-src{
 		text-align: left;
 		.src {

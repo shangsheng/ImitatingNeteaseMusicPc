@@ -169,7 +169,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#userCvrlst{
 		.f-pa {
 		    position: absolute;

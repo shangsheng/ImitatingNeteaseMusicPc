@@ -161,7 +161,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#musicRadio{
 		text-align: left;
 		.g-mn3 {

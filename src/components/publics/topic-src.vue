@@ -99,7 +99,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#topic-src{
 		text-align: left;
 		.src,  .card,  .hotrecmt .bar,  .showpic {

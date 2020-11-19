@@ -80,7 +80,7 @@
 							</div>
 						</div>
 						<h3 class="u-hd4" v-if="commentData.total>0">最新评论({{commentData.total}})</h3>
-						<div class="itm" :data-id="item.commentId" v-for="(item,index) in commentData.comments" v-bind:key="index">
+						<div class="itm" :data-id="item.commentId" v-for="(item,index1) in commentData.comments" v-bind:key="'info2-'+index1">
 							<div class="head">
 								<router-link :to="{path:'/user/home',query:{id:item.user.userId}}">
 									<img :src="item.user.avatarUrl"/>
@@ -394,7 +394,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	.n-cmt {
 	    margin-top: 40px;
 	    text-align: left;
@@ -457,6 +457,10 @@
 		    position: absolute;
 		    top: 11px;
 		    left: -7px;
+		}
+		textarea.u-txt{
+			width: 100%;
+    		margin-right: -20px;
 		}
 	}
 	.u-icn-36 {

@@ -217,7 +217,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-songs{
 		text-align: left;
 		.n-srchrst {

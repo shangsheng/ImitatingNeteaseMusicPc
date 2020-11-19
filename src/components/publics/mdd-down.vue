@@ -62,7 +62,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	.m-multi {
 	    margin: 20px 0;
 	    padding-bottom: 20px;

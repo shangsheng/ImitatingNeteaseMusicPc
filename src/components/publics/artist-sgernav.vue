@@ -108,7 +108,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#sgernav{
 		text-align: left;
 		.nav {

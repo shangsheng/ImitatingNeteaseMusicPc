@@ -2,12 +2,12 @@
 	<div id="m-pl-pager">
 		<div class="u-page">
 			<span class="zbtn zprv " :class="{'js-disabled':current_page == 1 }" @click="prvPage(current_page)">上一页</span>
-			<span class="zpgi " :class="[current_page == 1?'js-selected':'']"  @click="jumpPage(1)" v-if="pages==1">1</span>
+			<span class="zpgi " :class="[current_page == 1?'js-selected':'']"  @click="jumpPage(1)" v-if="pages==1|| current_page>5">1</span>
 			<span class="zdot" v-show="efont" >...</span>
-			<span class="zpgi" v-for="num of indexs"  :class="{'js-selected':current_page == num }" @click="jumpPage(num)" v-if="num != indexs.length || current_page == pages">{{num}}</span>
+			<span class="zpgi" v-for="num of indexs"  :class="{'js-selected':current_page == num }" @click="jumpPage(num)" v-if="num != indexs.length || current_page == pages || num == 7">{{num}}</span>
 			<span class="zdot" v-show="current_page<pages-4" >...</span>
-			<span class="zpgi" :class="[current_page == pages?'js-selected':'']"  @click="jumpPage(pages)" v-if= "current_page != pages">{{pages}}</span>
-			<span class="zbtn znxt" :class="{'js-disabled':current_page == pages}" @click="nxtPage(current_page)">下一页</span>
+			<span class="zpgi" :class="[current_page == pages?'js-selected':'']"  @click="jumpPage(pages)" v-if= "current_page != pages&&current_page<pages-4">{{pages}}</span>
+			<span class="zbtn znxt" :class="{'js-disabled':current_page == pages}" @click="nxtPage(current_page)" >下一页</span>
 		</div>
 	</div>	
 </template>
@@ -119,7 +119,7 @@
   }
 </script>
 
-<style language="less">
+<style language="less" >
 	
 	div.u-page {
 	    margin: 20px 0;

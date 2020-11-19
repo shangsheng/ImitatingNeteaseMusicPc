@@ -573,7 +573,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#video-src{
 		text-align: left;
 		 .src {

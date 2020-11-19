@@ -143,7 +143,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#rank{
 		text-align: left;
 		.g-wrap {

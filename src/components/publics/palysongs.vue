@@ -128,7 +128,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	.m-info .btns {
     margin-bottom: 25px;
     margin-right: -10px;
@@ -205,10 +205,12 @@
 .u-btni-fav-dis, .u-btni-fav-dis:hover, .u-btni-fav-dis2, .u-btni-fav-dis2:hover, .u-btni-share-dis, .u-btni-share-dis:hover, .u-btni-cmmt-dis, .u-btni-cmmt-dis:hover, .u-btni-dl-dis, .u-btni-dl-dis:hover {
     cursor: default;
     background-position: right -1192px;
+    pointer-events: none;
 }
 .u-btni-fav-dis i, .u-btni-fav-dis:hover i, .u-btni-fav-dis2 i, .u-btni-fav-dis2:hover i, .u-btni-share-dis i, .u-btni-share-dis:hover i, .u-btni-cmmt-dis i, .u-btni-cmmt-dis:hover i, .u-btni-dl-dis i, .u-btni-dl-dis:hover i {
     color: #bebebe;
     background-position: 0 -1149px;
     cursor: default;
+    // background-position: -330px -235px;
 }
 </style>

@@ -105,7 +105,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#m-artist{
 		text-align: left;
 		.n-srchrst {

@@ -72,7 +72,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#artistMv{
 		.m-cvrlst-7 {
 		    margin: 20px 0 0 -29px;

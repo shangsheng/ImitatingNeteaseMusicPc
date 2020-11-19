@@ -20,7 +20,7 @@
 								<em class="u-icn u-icn-38 u-icn-arr"></em>
 							</i>
 							<ul class="filter j-slt">
-								<li class="choose " :class="{'z-select':choseMes == item.title}" :data-res-type="item.type" data-res-action="choose" :data-res-value="item.title" v-for="(item,index) of chooseSelect" v-bind:key="index">
+								<li class="choose " :class="[choseMes == item.title?'z-select':'z-dis']" :data-res-type="item.type" data-res-action="choose" :data-res-value="item.title" v-for="(item,index) of chooseSelect" v-bind:key="index">
 									{{item.title}}
 								</li>
 							</ul>
@@ -216,7 +216,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#hotSongs{
 		text-align: left;
 		.n-top50 .btns {
@@ -302,6 +302,9 @@
 		}
 		.n-top50 .choose.z-select, .n-top50 .choose:hover {
 		    background-color: rgba(0,0,0,0.1);
+		}
+		.n-top50 .choose.z-dis:hover {
+		    background-color: #fff;
 		}
 		.m-table {
 		    width: 100%;

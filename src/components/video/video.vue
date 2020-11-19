@@ -698,7 +698,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#mv{
 		.n-mv {
 		    margin-top: -23px;

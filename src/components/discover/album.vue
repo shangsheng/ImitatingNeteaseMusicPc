@@ -16,7 +16,7 @@
 											<i class="f-fl u-icn u-icn-16"></i>
 											<div class="tit">
 												<h2 class="f-ff2">{{album.name}}</h2>
-												<div v-if="album.transNames.length>0" class="f-ff2">
+												<div v-if="album.transNames&&album.transNames.length>0" class="f-ff2">
 													<div class="subtit f-fs1 " v-for=" (keys,index) in album.transNames" v-bind:key="index">
 														{{keys}}
 													</div>
@@ -234,7 +234,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#album{
 		text-align: left;
 		.u-cover-alb {

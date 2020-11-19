@@ -94,7 +94,7 @@
 }
 </script>
 
-<style  lang="less">
+<style  lang="less" >
 	#resource-src{
 		text-align: left;
 		 .src,  .card,.hotrecmt .bar, .showpic {

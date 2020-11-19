@@ -98,7 +98,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" >
 	#artistAlbum{
 		text-align: left;
 		.m-cvrlst-alb4 {

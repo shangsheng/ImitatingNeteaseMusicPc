@@ -419,7 +419,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	#taste {
 		.n-daily {
 			.bg {
